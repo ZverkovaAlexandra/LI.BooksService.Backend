@@ -1,3 +1,5 @@
+using LI.BookService.Bll.Service;
+using LI.BookService.Core.Interfaces;
 using LI.BookService.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +25,10 @@ namespace LI.BookService
             string connection = Configuration.GetConnectionString("DefaultConnection");
             // устанавливаем контекст данных
             services.AddDbContext<BookServiceDbContext>(options => options.UseSqlServer(connection));
+
+            services.AddScoped<IDemandBookService, DemandBookService>();
+            services.AddControllers();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
