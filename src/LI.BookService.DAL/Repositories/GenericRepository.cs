@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LI.BookService.DAL.Repositories
@@ -13,6 +14,12 @@ namespace LI.BookService.DAL.Repositories
         public GenericRepository(BookServiceDbContext context)
         {
             _context = context;
+        }
+        public IQueryable<T> Query(bool ignoreGlobalFilters = false)
+        {
+            return ignoreGlobalFilters
+                ? this._context.Set<T>().IgnoreQueryFilters()
+                : this._context.Set<T>();
         }
 
         public async Task CreateAsync(T item)
@@ -33,8 +40,6 @@ namespace LI.BookService.DAL.Repositories
             return true;
         }
 
-
-
         public async Task<IList<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
@@ -44,8 +49,6 @@ namespace LI.BookService.DAL.Repositories
         {
             return await _context.Set<T>().FindAsync(id);
         }
-
-
 
         public async Task UpdateAsync(T item)
         {

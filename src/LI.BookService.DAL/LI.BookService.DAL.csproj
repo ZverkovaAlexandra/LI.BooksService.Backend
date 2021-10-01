@@ -13,4 +13,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LI.BookService.Core\LI.BookService.Core.csproj" />
+  </ItemGroup>
+
 </Project>
