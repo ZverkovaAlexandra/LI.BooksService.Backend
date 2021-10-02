@@ -21,7 +21,7 @@ namespace LI.BookService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //считываем строку подключения из файла appsettings.json
+
             string connection = Configuration.GetConnectionString("DefaultConnection");
             // устанавливаем контекст данных
             services.AddDbContext<BookServiceDbContext>(options => options.UseSqlServer(connection));
@@ -38,14 +38,16 @@ namespace LI.BookService
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
+            app.UseHttpsRedirection();
+
             app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllers();
             });
         }
     }
