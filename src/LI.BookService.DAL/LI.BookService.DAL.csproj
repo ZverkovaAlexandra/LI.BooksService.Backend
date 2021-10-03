@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LI.BookService.Core\LI.BookService.Core.csproj" />
+    <ProjectReference Include="..\LI.BookService.Model\LI.BookService.Model.csproj" />
   </ItemGroup>
 
 </Project>
