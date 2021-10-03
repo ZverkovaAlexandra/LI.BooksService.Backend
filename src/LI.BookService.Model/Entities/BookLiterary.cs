@@ -18,4 +18,4 @@ namespace LI.BookService.Model.Entities
         [ForeignKey("IdAuthor")]
         public Autor Autor {get; set; }
 }
-}
+    }

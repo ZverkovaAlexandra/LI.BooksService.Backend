@@ -11,6 +11,7 @@ namespace LI.BookService.DAL.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        
         Task<T> GetByIdAsync(Guid id);
 
         /// <summary>
