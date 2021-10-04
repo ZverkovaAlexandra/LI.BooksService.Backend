@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿
 namespace LI.BookService.Model.Entities
 {
     public class Category : IEntityBase

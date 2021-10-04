@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LI.BookService.Model.Entities
+﻿namespace LI.BookService.Model.Entities
 {
-   public class UserAddress : IEntityBase
+    public class UserAddress : IEntityBase
     {
         public int IdUserAddress { get; set; }
         public int IdUser { get; set; }

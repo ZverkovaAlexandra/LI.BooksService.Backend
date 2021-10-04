@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using LI.BookService.Model.Entities;
+using System;
 
 namespace LI.BookService.DAL
 {
@@ -49,13 +50,13 @@ namespace LI.BookService.DAL
                 .IsRequired()
                 .HasMaxLength(4);
 
-            modelBuilder.Entity<OfferList>().Property(x => x.CreateAt).IsRequired();
+            modelBuilder.Entity<OfferList>().Property(x => x.CreateAt).IsRequired().HasDefaultValue(DateTime.Now);
 
             modelBuilder.Entity<OfferList>().Property(x => x.UpdateAt)
                 .IsRequired()
-                .HasDefaultValue(modelBuilder.Entity<OfferList>().Property(x => x.CreateAt));
+                .HasDefaultValue(DateTime.Now);
 
-            modelBuilder.Entity<OfferList>().Property(x => x.IdStatus).HasDefaultValue("Cвободен");
+           // modelBuilder.Entity<OfferList>().Property(x => x.IdStatus).HasDefaultValue("Cвободен");
 
             // ----- UserList -----
 
