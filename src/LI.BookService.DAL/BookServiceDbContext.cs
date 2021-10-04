@@ -49,6 +49,14 @@ namespace LI.BookService.DAL
                 .HasDefaultValue(modelBuilder.Entity<OfferList>().Property(x => x.CreateAt));
 
             modelBuilder.Entity<OfferList>().Property(x => x.IdStatus).HasDefaultValue("Cвободен");
+
+            // ----- UserList -----
+
+            // ----- Category -----
+
+            // ----- List -----
+
+            // ----- UserValueCategory -----
         }
     }
 }
