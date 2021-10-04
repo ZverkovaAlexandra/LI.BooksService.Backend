@@ -5,11 +5,11 @@ namespace LI.BookService.Model.DTO
     /// <summary>
     /// заявка для обмена книги
     /// </summary>
-    public class DtoDemandBook
+    public class DtoRequestBook
     {
         public string AuthorName { get; set; }
         public string BookName { get; set; }
-        public DateTimeOffset YearPublishing { get; set; }
+        public DateTime YearPublishing { get; set; }
         public string ISBN { get; set; }
         public int[] Categories { get; set; }
         public int AddressId { get; set; }
