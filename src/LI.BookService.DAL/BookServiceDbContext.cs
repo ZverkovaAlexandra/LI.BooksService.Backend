@@ -18,12 +18,15 @@ namespace LI.BookService.DAL
         public DbSet<Category> Categories { get; set; }
         public DbSet<List> Lists { get; set; }
         public DbSet<WishList> WishLists { get; set; }
+        public DbSet<ExchangeList> ExchangeLists { get; set; }
+        public DbSet<UserExchangeList> UserExchangeLists { get; set; }
+        public DbSet<Status> Statuses { get; set; }
         public DbSet<UserList> UserLists { get; set; }
         public DbSet<UserValueCategory> UserValueCategories { get; set; }
         public DbSet<OfferList> OfferLists { get; set; }
-
         public DbSet<User> User { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
+
         public BookServiceDbContext(DbContextOptions<BookServiceDbContext> options) : base(options)
         {
 
@@ -56,7 +59,12 @@ namespace LI.BookService.DAL
                 .HasOne(x => x.User)
                 .WithMany(x => x.OfferLists)
                 .HasForeignKey(x=> x.UserId);
-            // modelBuilder.Entity<OfferList>().Property(x => x.IdStatus).HasDefaultValue("Cвободен");
+
+            modelBuilder.Entity<OfferList>().Property(x => x.CreateAt).IsRequired();
+
+            modelBuilder.Entity<OfferList>().Property(x => x.UpdateAt).IsRequired();
+
+            modelBuilder.Entity<OfferList>().Property(x => x.StatusId).HasDefaultValue(0);
 
             // ----- UserList -----
 
@@ -140,6 +148,28 @@ namespace LI.BookService.DAL
             modelBuilder.Entity<UserAddress>().Property(x => x.IsDefault)
             .IsRequired()
             .HasDefaultValue(false);
+
+            // ----- WishList -----
+            modelBuilder.Entity<WishList>().Property(x => x.CreateAt).IsRequired();
+
+            modelBuilder.Entity<WishList>().Property(x => x.UpdateAt).IsRequired();
+
+            modelBuilder.Entity<WishList>().Property(x => x.StatusId).HasDefaultValue(0);
+
+            // ----- ExchangeList -----
+            modelBuilder.Entity<ExchangeList>().Property(x => x.CreateAt).IsRequired();
+            modelBuilder.Entity<ExchangeList>().Property(x => x.IsBoth)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            // ----- UserExchangeList -----
+            modelBuilder.Entity<UserExchangeList>().Property(x => x.TrackNumber).HasMaxLength(14);
+            modelBuilder.Entity<UserExchangeList>().Property(x => x.Receiving)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            // ----- Status -----
+            modelBuilder.Entity<Status>().Property(x => x.Name).HasMaxLength(10);
         }
     }
 }
