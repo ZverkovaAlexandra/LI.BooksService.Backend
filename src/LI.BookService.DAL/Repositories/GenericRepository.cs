@@ -28,7 +28,7 @@ namespace LI.BookService.DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> ExistsAsync(Guid id)
+        public async Task<bool> ExistsAsync(int id)
         {
             var dbSet = _context.Set<T>();
             var item = await dbSet.FindAsync(id);
@@ -45,7 +45,7 @@ namespace LI.BookService.DAL.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(int id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
