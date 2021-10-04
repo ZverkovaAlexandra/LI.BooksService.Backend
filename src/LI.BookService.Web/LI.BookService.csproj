@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LI.BookService.Bll\LI.BookService.Bll.csproj" />
     <ProjectReference Include="..\LI.BookService.DAL\LI.BookService.DAL.csproj" />
   </ItemGroup>
 
