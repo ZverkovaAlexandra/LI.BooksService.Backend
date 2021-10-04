@@ -4,9 +4,9 @@ using System.Text;
 
 namespace LI.BookService.Model.Entities
 {
-   public class User : IEntityBase
+    public class User : IEntityBase
     {
-        public int IdUser { get; set; }
+        public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string SecondName { get; set; }
@@ -16,11 +16,11 @@ namespace LI.BookService.Model.Entities
         public int Rating { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool Enabled { get; set; }
-        public bool[] Avatar { get; set; }
+        public byte[] Avatar { get; set; }
         public bool IsStaff { get; set; }
         public bool IsSuperAdmin { get; set; }
 
-
+        public List<OfferList> OfferLists { get; set; }
         public List<UserAddress> UserAddresses { get; set; }
 
 

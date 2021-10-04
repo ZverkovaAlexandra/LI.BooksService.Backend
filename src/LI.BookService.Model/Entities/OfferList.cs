@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LI.BookService.Model.Entities
 {
     public class OfferList : IEntityBase
     {
-        public int IdOfferList { get; set; }
-        public int IdBookLiterary { get; set; }
-        public int IdUser { get; set; }
+        public int OfferListId { get; set; }
+        public int BookLiteraryId { get; set; }
+        public int UserId { get; set; }
         public string ISBN { get; set; }
         public DateTime YearPublishing { get; set; }
         public DateTime CreateAt { get; set; }

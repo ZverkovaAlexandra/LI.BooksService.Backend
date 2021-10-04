@@ -2,8 +2,8 @@
 {
     public class UserAddress : IEntityBase
     {
-        public int IdUserAddress { get; set; }
-        public int IdUser { get; set; }
+        public int UserAddressId { get; set; }
+        public int UserId { get; set; }
         public string AddrIndex { get; set; }
         public string AddrCity { get; set; }
         public string AddrSreet { get; set; }

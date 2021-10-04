@@ -2,9 +2,9 @@
 {
     public class List:IEntityBase
     {
-        public int IdList { get; set; }
-        public int IdOfferList { get; set; }
-        public int IdWishList { get; set; }
+        public int ListId { get; set; }
+        public int OfferListId { get; set; }
+        public int WishListId { get; set; }
 
         public OfferList OfferList { get; set; }
         public WishList WishList { get; set; }

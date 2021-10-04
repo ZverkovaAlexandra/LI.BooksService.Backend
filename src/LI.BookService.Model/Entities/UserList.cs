@@ -3,9 +3,9 @@ namespace LI.BookService.Model.Entities
 {
     public class UserList : IEntityBase
     {
-        public int IdUserList { get; set; }
+        public int UserListId { get; set; }
         public int TypeList { get; set; }
-        public int IdList { get; set; }
+        public int ListId { get; set; }
         public List List { get; set; }
         
     }

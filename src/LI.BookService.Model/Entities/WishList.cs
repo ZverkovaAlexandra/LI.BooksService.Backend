@@ -2,6 +2,6 @@
 {
     public class WishList
     {
-        public int IdWishList { get; set; }
+        public int WishListId { get; set; }
     }
 }

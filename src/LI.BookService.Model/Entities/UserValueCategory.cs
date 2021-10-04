@@ -2,9 +2,9 @@
 {
     public class UserValueCategory : IEntityBase
     {
-        public int IdUserValueCategory { get; set; }
-        public int IdUserList { get; set; }
-        public int IdCategory { get; set; }
+        public int UserValueCategoryId { get; set; }
+        public int UserListId { get; set; }
+        public int CategoryId { get; set; }
     
         public UserList UserList { get; set; }
         public Category Category { get; set; }

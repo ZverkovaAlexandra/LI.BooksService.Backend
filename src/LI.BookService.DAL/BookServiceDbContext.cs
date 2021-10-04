@@ -26,11 +26,13 @@ namespace LI.BookService.DAL
         public DbSet<UserAddress> UserAddresses { get; set; }
         public BookServiceDbContext(DbContextOptions<BookServiceDbContext> options) : base(options)
         {
-            Database.EnsureCreated();   // создаем базу данных при первом обращении
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // ----- Author -----
             modelBuilder.Entity<Author>().Property(x => x.LastName)
                 .IsRequired()
@@ -50,13 +52,11 @@ namespace LI.BookService.DAL
                 .IsRequired()
                 .HasMaxLength(4);
 
-            modelBuilder.Entity<OfferList>().Property(x => x.CreateAt).IsRequired().HasDefaultValue(DateTime.Now);
-
-            modelBuilder.Entity<OfferList>().Property(x => x.UpdateAt)
-                .IsRequired()
-                .HasDefaultValue(DateTime.Now);
-
-           // modelBuilder.Entity<OfferList>().Property(x => x.IdStatus).HasDefaultValue("Cвободен");
+            modelBuilder.Entity<OfferList>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.OfferLists)
+                .HasForeignKey(x=> x.UserId);
+            // modelBuilder.Entity<OfferList>().Property(x => x.IdStatus).HasDefaultValue("Cвободен");
 
             // ----- UserList -----
 
@@ -113,7 +113,7 @@ namespace LI.BookService.DAL
             modelBuilder.Entity<UserAddress>()
                .HasOne(p => p.User)
                .WithMany(b => b.UserAddresses)
-               .HasForeignKey(p => p.IdUser);
+               .HasForeignKey(p => p.UserId);
 
             modelBuilder.Entity<UserAddress>().Property(x => x.AddrIndex)
                  .IsRequired()
