@@ -14,6 +14,11 @@ namespace LI.BookService.DAL
 
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookLiterary> BookLiteraries { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<List> Lists { get; set; }
+        public DbSet<WishList> WishLists { get; set; }
+        public DbSet<UserList> UserLists { get; set; }
+        public DbSet<UserValueCategory> UserValueCategories { get; set; }
         public DbSet<OfferList> OfferLists { get; set; }
 
         public DbSet<User> User { get; set; }
@@ -59,14 +64,11 @@ namespace LI.BookService.DAL
             // ----- List -----
 
             // ----- UserValueCategory -----
-        }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
             // ----- User -----
-           modelBuilder.Entity<User>().Property(x => x.FirstName)
-                .IsRequired()
-                .HasMaxLength(25);
+            modelBuilder.Entity<User>().Property(x => x.FirstName)
+                 .IsRequired()
+                 .HasMaxLength(25);
 
             modelBuilder.Entity<User>().Property(x => x.LastName)
                 .IsRequired()
@@ -89,14 +91,14 @@ namespace LI.BookService.DAL
 
             modelBuilder.Entity<User>().Property(x => x.Rating)
              .IsRequired()
-             .HasDefaultValue(0); 
+             .HasDefaultValue(0);
 
             modelBuilder.Entity<User>().Property(x => x.CreatedAt)
               .IsRequired();
 
             modelBuilder.Entity<User>().Property(x => x.Enabled)
              .IsRequired()
-             .HasDefaultValue(true); 
+             .HasDefaultValue(true);
 
             modelBuilder.Entity<User>().Property(x => x.IsStaff)
              .IsRequired()
@@ -108,13 +110,13 @@ namespace LI.BookService.DAL
 
             // ----- UserAddress -----
             modelBuilder.Entity<UserAddress>()
-               .HasOne(p =>p.User)
-               .WithMany(b =>b.UserAddresses)
+               .HasOne(p => p.User)
+               .WithMany(b => b.UserAddresses)
                .HasForeignKey(p => p.IdUser);
 
-           modelBuilder.Entity<UserAddress>().Property(x => x.AddrIndex)
-                .IsRequired()
-                .HasMaxLength(6);
+            modelBuilder.Entity<UserAddress>().Property(x => x.AddrIndex)
+                 .IsRequired()
+                 .HasMaxLength(6);
 
             modelBuilder.Entity<UserAddress>().Property(x => x.AddrCity)
                 .IsRequired()
@@ -139,4 +141,4 @@ namespace LI.BookService.DAL
             .HasDefaultValue(false);
         }
     }
-    }
+}
