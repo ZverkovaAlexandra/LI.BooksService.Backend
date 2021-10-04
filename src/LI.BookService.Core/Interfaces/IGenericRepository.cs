@@ -11,7 +11,7 @@ namespace LI.BookService.DAL.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<T> GetByIdAsync(Guid id);
+        Task<T> GetByIdAsync(int id);
 
         /// <summary>
         /// Получение всех записей
@@ -38,7 +38,7 @@ namespace LI.BookService.DAL.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<bool> ExistsAsync(Guid id);
+        Task<bool> ExistsAsync(int id);
 
         /// <summary>
         /// удаление объекта
