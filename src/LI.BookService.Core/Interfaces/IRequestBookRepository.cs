@@ -1,5 +1,4 @@
 ﻿using LI.BookService.DAL.Interfaces;
-using LI.BookService.Model.DTO;
 using LI.BookService.Model.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
