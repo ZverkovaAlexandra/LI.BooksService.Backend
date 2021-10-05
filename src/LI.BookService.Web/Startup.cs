@@ -29,6 +29,8 @@ namespace LI.BookService
 
             services.AddScoped<IBookRequestService, BookRequestService>();
             services.AddScoped<IRequestBookRepository, RequestBookRepository>();
+            services.AddScoped<IUserAddressRepository, UserAddressRepository>();
+            services.AddScoped<IUserAddressService, UserAddressServicecs>();
             services.AddControllers();
 
         }

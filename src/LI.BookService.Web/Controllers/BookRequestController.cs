@@ -29,7 +29,7 @@ namespace LI.BookService.Controllers
         /// получение всех заявок пользователя для обмена книг
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{userId}")]
         public async Task<ActionResult> GetAllRequestBookUsers(int userId)
         {
             var listRequestUser = await _requestBookRepository.GetAllRequestsUser(userId);
@@ -58,9 +58,9 @@ namespace LI.BookService.Controllers
         }
 
         /// <summary>
-        /// редактирование заявки для получения книги
+        ///  редактирование заявки для получения книги
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="requestEdit"></param>
         /// <returns></returns>
         [HttpPut]
         public async Task<ActionResult<DtoRequestEdit>> UpdateGenreBook([FromBody] DtoRequestEdit requestEdit)
@@ -87,14 +87,14 @@ namespace LI.BookService.Controllers
         /// <summary>
         /// удаление заявки для получения книги
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="offerListId"></param>
         /// <returns></returns>
         [HttpDelete]
         public async Task<ActionResult> DeleteBook(int offerListId)
         {
             try
             {
-                bool exists = await _requestBookRepository.ExistsAsync(offerListId);
+                bool exists = await _requestBookRepository.ExistsAsync(offerListId);//проверяем,существет ли запись в бд
                 if (exists)
                 {
                     var requestBook = await _requestBookRepository.GetByIdAsync(offerListId);
