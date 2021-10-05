@@ -8,12 +8,6 @@ namespace LI.BookService.Core.Interfaces
 {
     public interface IRequestBookRepository : IGenericRepository<OfferList>
     {
-        /// <summary>
-        /// достаем из бд заявку на полечение книги 
-        /// </summary>
-        /// <param name="bookRequest"></param>
-        /// <returns></returns>
-        Task<OfferList> GetOfferList(DtoRequestBook bookRequest);
 
         /// <summary>
         /// получаем все заявки пользователя

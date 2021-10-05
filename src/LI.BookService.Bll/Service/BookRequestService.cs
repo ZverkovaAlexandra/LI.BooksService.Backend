@@ -1,6 +1,7 @@
 ﻿using LI.BookService.Core.Interfaces;
 using LI.BookService.Model.DTO;
 using LI.BookService.Model.Entities;
+using System;
 
 namespace LI.BookService.Bll.Service
 {
@@ -9,8 +10,14 @@ namespace LI.BookService.Bll.Service
         public OfferList CreateRequestBook(DtoRequestBook requestBook)
         {
             OfferList newOffer = new OfferList();
-            newOffer.ISBN = requestBook.ISBN;
+
+            Author author = new Author() { FirstName = requestBook.AuthorFirstName, LastName = requestBook.AuthorLastName };
+            BookLiterary bookLitherary = new BookLiterary() { Author = author, BookName = requestBook.BookName };
+
+            newOffer.BookLiterary = bookLitherary;
             newOffer.YearPublishing = requestBook.YearPublishing;
+            newOffer.CreateAt = DateTime.Now;
+            newOffer.UpdateAt = DateTime.Now;
 
             return newOffer;
         }
@@ -21,12 +28,18 @@ namespace LI.BookService.Bll.Service
         /// <param name="offer"></param>
         /// <param name="requestBook"></param>
         /// <returns></returns>
-        public OfferList EditRequestBook(OfferList offer, DtoRequestBook requestBook)
+        public OfferList EditRequestBook(OfferList offer, DtoRequestEdit requestEdit)
         {
-            offer.ISBN = requestBook.ISBN;
-            offer.YearPublishing = requestBook.YearPublishing;
+            Author author = new Author() { FirstName = requestEdit.AuthorFirstName, LastName = requestEdit.AuthorLastName };
+            BookLiterary bookLitherary = new BookLiterary() { Author = author, BookName = requestEdit.BookName };
+            offer.BookLiterary = bookLitherary;
+            offer.YearPublishing = requestEdit.YearPublishing;
+            offer.UpdateAt = DateTime.Now;
+
             return offer;
+
         }
+
 
     }
 }
