@@ -7,12 +7,12 @@ namespace LI.BookService.Model.DTO
     /// </summary>
     public class DtoRequestBook
     {
-        public string AuthorName { get; set; }
+        public string AuthorFirstName { get; set; }
+        public string AuthorLastName { get; set; }
         public string BookName { get; set; }
         public DateTime YearPublishing { get; set; }
         public string ISBN { get; set; }
         public int[] Categories { get; set; }
-        public int AddressId { get; set; }
     }
 
 }
