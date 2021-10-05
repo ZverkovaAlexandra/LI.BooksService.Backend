@@ -8,7 +8,7 @@ namespace LI.BookService.Model.Entities
         public int UserId { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
         public int UserAddressId { get; set; }
         public User User { get; set; }
         public Status Status { get; set; }

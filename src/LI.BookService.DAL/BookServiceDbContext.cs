@@ -64,7 +64,9 @@ namespace LI.BookService.DAL
 
             modelBuilder.Entity<OfferList>().Property(x => x.UpdateAt).IsRequired();
 
-            modelBuilder.Entity<OfferList>().Property(x => x.StatusId).HasDefaultValue(0);
+            modelBuilder.Entity<OfferList>().HasOne(x => x.Status)
+                .WithMany(y => y.OfferLists)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // ----- UserList -----
 
@@ -154,7 +156,9 @@ namespace LI.BookService.DAL
 
             modelBuilder.Entity<WishList>().Property(x => x.UpdateAt).IsRequired();
 
-            modelBuilder.Entity<WishList>().Property(x => x.StatusId).HasDefaultValue(0);
+            modelBuilder.Entity<WishList>().HasOne(x => x.Status)
+                .WithMany(y => y.WishLists)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // ----- ExchangeList -----
             modelBuilder.Entity<ExchangeList>().Property(x => x.CreateAt).IsRequired();
