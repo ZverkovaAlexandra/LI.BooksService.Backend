@@ -4,14 +4,16 @@ using LI.BookService.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LI.BookService.DAL.Migrations
 {
     [DbContext(typeof(BookServiceDbContext))]
-    partial class BookServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211006151614_SS-58")]
+    partial class SS58
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -365,10 +367,15 @@ namespace LI.BookService.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ListId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TypeList")
                         .HasColumnType("int");
 
                     b.HasKey("UserListId");
+
+                    b.HasIndex("ListId");
 
                     b.ToTable("UserLists");
                 });
@@ -539,6 +546,17 @@ namespace LI.BookService.DAL.Migrations
                     b.Navigation("OfferList");
                 });
 
+            modelBuilder.Entity("LI.BookService.Model.Entities.UserList", b =>
+                {
+                    b.HasOne("LI.BookService.Model.Entities.List", "List")
+                        .WithMany()
+                        .HasForeignKey("ListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("List");
+                });
+
             modelBuilder.Entity("LI.BookService.Model.Entities.UserValueCategory", b =>
                 {
                     b.HasOne("LI.BookService.Model.Entities.Category", "Category")
@@ -548,7 +566,7 @@ namespace LI.BookService.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("LI.BookService.Model.Entities.UserList", "UserList")
-                        .WithMany("UserValueCategories")
+                        .WithMany()
                         .HasForeignKey("UserListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -590,11 +608,6 @@ namespace LI.BookService.DAL.Migrations
                     b.Navigation("OfferLists");
 
                     b.Navigation("UserAddresses");
-                });
-
-            modelBuilder.Entity("LI.BookService.Model.Entities.UserList", b =>
-                {
-                    b.Navigation("UserValueCategories");
                 });
 #pragma warning restore 612, 618
         }
