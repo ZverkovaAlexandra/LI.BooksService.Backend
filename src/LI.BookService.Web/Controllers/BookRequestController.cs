@@ -12,9 +12,9 @@ namespace LI.BookService.Controllers
     public class BookRequestController : ControllerBase
     {
         private IBookRequestService _bookRequestService;
-        private IRequestBookRepository _requestBookRepository;
+        private IOfferListRepository _requestBookRepository;
 
-        public BookRequestController(IBookRequestService bookRequestService, IRequestBookRepository requestBookRepository)
+        public BookRequestController(IBookRequestService bookRequestService, IOfferListRepository requestBookRepository)
         {
             _bookRequestService = bookRequestService;
             _requestBookRepository = requestBookRepository;
@@ -32,7 +32,7 @@ namespace LI.BookService.Controllers
         [HttpGet("{userId}")]
         public async Task<ActionResult> GetAllRequestBookUsers(int userId)
         {
-            var listRequestUser = await _requestBookRepository.GetAllRequestsUser(userId);
+            var listRequestUser = await _requestBookRepository.GetAllRequestsUserAsync(userId);
             return Ok(listRequestUser);
         }
 
@@ -42,13 +42,12 @@ namespace LI.BookService.Controllers
         /// <param name="dtoDemandBook"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> CreateRequestBook([FromBody] DtoRequestBook bookRequest)
+        public async Task<ActionResult> CreateRequestBook([FromBody] DtoNewRequest dtoNewRequest)
         {
-            if (bookRequest != null)
+            if (dtoNewRequest != null)
             {
-                var offer = _bookRequestService.CreateRequestBook(bookRequest);
-                await _requestBookRepository.CreateAsync(offer);
-                return Ok();
+                var requestBook= await _bookRequestService.CreateRequestBook(dtoNewRequest);
+                return Ok(requestBook);
             }
             else
             {
@@ -63,16 +62,15 @@ namespace LI.BookService.Controllers
         /// <param name="requestEdit"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<ActionResult<DtoRequestEdit>> UpdateGenreBook([FromBody] DtoRequestEdit requestEdit)
+        public async Task<ActionResult<DtoRequestBook>> UpdateGenreBook([FromBody] DtoRequestBook requestBook)
         {
             try
             {
-                if (requestEdit != null)
+                if (requestBook != null)
                 {
-                    var offerEdit = await _requestBookRepository.GetByIdAsync(requestEdit.Id);
-                    var updateRequestBook = _bookRequestService.EditRequestBook(offerEdit, requestEdit);
-                    await _requestBookRepository.UpdateAsync(updateRequestBook);
-                    return requestEdit;
+                    var offer = await _bookRequestService.EditRequestBookAsync(requestBook);
+
+                    return Ok(offer);
                 }
                 return BadRequest("некорректный id заявки");
 
