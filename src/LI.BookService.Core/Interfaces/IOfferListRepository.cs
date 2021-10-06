@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LI.BookService.Core.Interfaces
 {
-    public interface IRequestBookRepository : IGenericRepository<OfferList>
+    public interface IOfferListRepository : IGenericRepository<OfferList>
     {
 
         /// <summary>
@@ -13,6 +13,14 @@ namespace LI.BookService.Core.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<List<OfferList>> GetAllRequestsUser(int id);
+        Task<List<OfferList>> GetAllRequestsUserAsync(int id);
+
+
+        /// <summary>
+        /// получаем категорию по id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Category> GetCategoryAsync(int id);
     }
 }

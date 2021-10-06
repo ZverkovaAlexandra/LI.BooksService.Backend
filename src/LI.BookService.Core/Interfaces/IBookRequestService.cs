@@ -1,6 +1,6 @@
 ﻿using LI.BookService.Model.DTO;
 using LI.BookService.Model.Entities;
-
+using System.Threading.Tasks;
 
 namespace LI.BookService.Core.Interfaces
 {
@@ -9,17 +9,16 @@ namespace LI.BookService.Core.Interfaces
         /// <summary>
         /// создание заявки на книгу
         /// </summary>
-        /// <param name="requestBook"></param>
+        /// <param name="dtoNewRequest"></param>
         /// <returns></returns>
-        OfferList CreateRequestBook(DtoRequestBook requestBook);
+        Task<DtoNewRequest> CreateRequestBook(DtoNewRequest dtoNewRequest);
 
         /// <summary>
-        /// редактирование заявки на книгу
+        ///  редактирование заявки на книгу
         /// </summary>
-        /// <param name="offer"></param>
-        /// <param name="requestEdit"></param>
+        /// <param name="requestBook"></param>
         /// <returns></returns>
-        OfferList EditRequestBook(OfferList offer, DtoRequestEdit requestEdit);
+        Task<DtoRequestBook> EditRequestBookAsync(DtoRequestBook requestBook);
 
     }
 }
