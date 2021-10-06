@@ -31,6 +31,9 @@ namespace LI.BookService
             services.AddScoped<IOfferListRepository, OfferListRepository>();
             services.AddScoped<IUserAddressRepository, UserAddressRepository>();
             services.AddScoped<IUserAddressService, UserAddressServicecs>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IBookLiteraryRepository, BookLiteraryRepository>();
+            services.AddScoped<IUserValueCategoryRepository, UserValueCategoryRepository>();
             services.AddControllers();
 
         }

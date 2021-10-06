@@ -14,6 +14,7 @@ namespace LI.BookService.Controllers
         private IUserAddressService _userAddressService;
         private IUserAddressRepository _userAddressRepository;
 
+
         public UserAddressController(IUserAddressService userAddressService, IUserAddressRepository userAddressRepository)
         {
             _userAddressService = userAddressService;
@@ -27,8 +28,7 @@ namespace LI.BookService.Controllers
         [HttpGet("{userId}")]
         public async Task<ActionResult> GetUserAddress(int userId)
         {
-            var addressEntity = await _userAddressRepository.GetAddressUser(userId);
-            var addressDto = _userAddressService.GetAddressUser(addressEntity);
+            var addressDto =await  _userAddressService.GetAddressUserAsync(userId);
 
             return Ok(addressDto);
         }
@@ -43,9 +43,8 @@ namespace LI.BookService.Controllers
         {
             if (dtoUserAddress != null)
             {
-                var address = _userAddressService.CreateUserAddress(dtoUserAddress);
-                await _userAddressRepository.CreateAsync(address);
-                return Ok();
+                var address = await _userAddressService.CreateUserAddressAsync(dtoUserAddress);
+                return Ok(address);
             }
             else
             {
@@ -66,10 +65,8 @@ namespace LI.BookService.Controllers
             {
                 if (dtoUserAddress != null)
                 {
-                    var adressEntity = await _userAddressRepository.GetByIdAsync(dtoUserAddress.Id);
-                    var addressDto = _userAddressService.EditUserAddress(adressEntity, dtoUserAddress);
-
-                    return Ok(addressDto);
+                    var address = await _userAddressService.EditUserAddressAsync(dtoUserAddress);
+                    return Ok(address);
                 }
                 return BadRequest("некорректный id адреса пользователя");
 

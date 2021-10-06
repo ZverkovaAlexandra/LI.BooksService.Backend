@@ -1,6 +1,6 @@
 ﻿using LI.BookService.Model.DTO;
 using LI.BookService.Model.Entities;
-
+using System.Threading.Tasks;
 
 namespace LI.BookService.Core.Interfaces
 {
@@ -11,22 +11,21 @@ namespace LI.BookService.Core.Interfaces
         /// </summary>
         /// <param name="dtoUserAddress"></param>
         /// <returns></returns>
-        UserAddress CreateUserAddress(DtoUserAddress dtoUserAddress);
+        Task<DtoUserAddress> CreateUserAddressAsync(DtoUserAddress dtoUserAddress);
 
         /// <summary>
         /// редактирование адреса пользователя
         /// </summary>
-        /// <param name="userAddress"></param>
         /// <param name="dtoUserAddress"></param>
         /// <returns></returns>
-        UserAddress EditUserAddress(UserAddress userAddress, DtoUserAddress dtoUserAddress);
+        Task<DtoUserAddress> EditUserAddressAsync(DtoUserAddress dtoUserAddress);
 
         /// <summary>
         /// преобразование сущности адреса в дто для отправки пользователю
         /// </summary>
-        /// <param name="userAddress"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        DtoUserAddress GetAddressUser(UserAddress userAddress);
+        Task<DtoUserAddress> GetAddressUserAsync(int userId);
 
     }
 }
