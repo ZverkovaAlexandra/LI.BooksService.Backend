@@ -30,9 +30,9 @@ namespace LI.BookService.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult> GetAllRequestBookUsers(int id)
+        public async Task<ActionResult> GetAllRequestBookUsers(int userId)
         {
-            var listRequestUser = await _requestBookRepository.GetAllRequestsUser(id);
+            var listRequestUser = await _requestBookRepository.GetAllRequestsUser(userId);
             return Ok(listRequestUser);
         }
 
@@ -63,16 +63,16 @@ namespace LI.BookService.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<ActionResult<DtoRequestBook>> UpdateGenreBook([FromBody] DtoRequestBook bookRequest)
+        public async Task<ActionResult<DtoRequestEdit>> UpdateGenreBook([FromBody] DtoRequestEdit requestEdit)
         {
             try
             {
-                if (bookRequest != null)
+                if (requestEdit != null)
                 {
-                    var offerEdit = await _requestBookRepository.GetOfferList(bookRequest);
-                    var updateRequestBook = _bookRequestService.EditRequestBook(offerEdit, bookRequest);
+                    var offerEdit = await _requestBookRepository.GetByIdAsync(requestEdit.Id);
+                    var updateRequestBook = _bookRequestService.EditRequestBook(offerEdit, requestEdit);
                     await _requestBookRepository.UpdateAsync(updateRequestBook);
-                    return bookRequest;
+                    return requestEdit;
                 }
                 return BadRequest("некорректный id заявки");
 

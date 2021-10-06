@@ -16,9 +16,10 @@ namespace LI.BookService.Core.Interfaces
         /// <summary>
         /// редактирование заявки на книгу
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="offer"></param>
+        /// <param name="requestEdit"></param>
         /// <returns></returns>
-        OfferList EditRequestBook(OfferList offer, DtoRequestBook requestBook);
+        OfferList EditRequestBook(OfferList offer, DtoRequestEdit requestEdit);
 
     }
 }

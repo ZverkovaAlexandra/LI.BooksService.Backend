@@ -18,17 +18,6 @@ namespace LI.BookService.DAL.Repositories
         }
 
         /// <summary>
-        /// достаем из бд заявку на полечение книги 
-        /// </summary>
-        /// <param name="bookRequest"></param>
-        /// <returns></returns>
-        public async Task<OfferList> GetOfferList(DtoRequestBook bookRequest)
-        {
-            var offerList = await _context.OfferLists.SingleOrDefaultAsync(x => x.ISBN == bookRequest.ISBN && x.YearPublishing == bookRequest.YearPublishing);
-            return offerList;
-        }
-
-        /// <summary>
         /// получаем все заявки пользователя
         /// </summary>
         /// <param name="id"></param>
