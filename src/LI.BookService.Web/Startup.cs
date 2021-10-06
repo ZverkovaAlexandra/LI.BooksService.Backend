@@ -28,7 +28,12 @@ namespace LI.BookService
             services.AddDbContext<BookServiceDbContext>(options => options.UseSqlServer(connection));
 
             services.AddScoped<IBookRequestService, BookRequestService>();
-            services.AddScoped<IRequestBookRepository, RequestBookRepository>();
+            services.AddScoped<IOfferListRepository, OfferListRepository>();
+            services.AddScoped<IUserAddressRepository, UserAddressRepository>();
+            services.AddScoped<IUserAddressService, UserAddressServicecs>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IBookLiteraryRepository, BookLiteraryRepository>();
+            services.AddScoped<IUserValueCategoryRepository, UserValueCategoryRepository>();
             services.AddControllers();
 
         }
