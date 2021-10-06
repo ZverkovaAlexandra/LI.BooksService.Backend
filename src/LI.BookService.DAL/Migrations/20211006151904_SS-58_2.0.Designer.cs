@@ -4,14 +4,16 @@ using LI.BookService.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LI.BookService.DAL.Migrations
 {
     [DbContext(typeof(BookServiceDbContext))]
-    partial class BookServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211006151904_SS-58_2.0")]
+    partial class SS58_20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

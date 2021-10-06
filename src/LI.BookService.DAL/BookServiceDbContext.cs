@@ -58,15 +58,11 @@ namespace LI.BookService.DAL
             modelBuilder.Entity<OfferList>()
                 .HasOne(x => x.User)
                 .WithMany(x => x.OfferLists)
-                .HasForeignKey(x=> x.UserId);
+                .HasForeignKey(x => x.UserId);
 
             modelBuilder.Entity<OfferList>().Property(x => x.CreateAt).IsRequired();
 
             modelBuilder.Entity<OfferList>().Property(x => x.UpdateAt).IsRequired();
-
-            modelBuilder.Entity<OfferList>().HasOne(x => x.Status)
-                .WithMany(y => y.OfferLists)
-                .OnDelete(DeleteBehavior.Cascade);
 
             // ----- UserList -----
 
@@ -156,9 +152,23 @@ namespace LI.BookService.DAL
 
             modelBuilder.Entity<WishList>().Property(x => x.UpdateAt).IsRequired();
 
-            modelBuilder.Entity<WishList>().HasOne(x => x.Status)
-                .WithMany(y => y.WishLists)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<WishList>()
+                .HasOne(x => x.Status)
+                .WithMany()
+                .HasForeignKey(x => x.StatusId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<WishList>()
+                .HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<WishList>()
+                .HasOne(x => x.UserAddress)
+                .WithMany()
+                .HasForeignKey(x => x.UserAddressId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // ----- ExchangeList -----
             modelBuilder.Entity<ExchangeList>().Property(x => x.CreateAt).IsRequired();

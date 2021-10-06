@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LI.BookService.DAL.Migrations
 {
     [DbContext(typeof(BookServiceDbContext))]
-    [Migration("20211005203541_SS-58")]
+    [Migration("20211006151614_SS-58")]
     partial class SS58
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,7 +172,7 @@ namespace LI.BookService.DAL.Migrations
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
 
-                    b.Property<int?>("StatusId")
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateAt")
@@ -412,7 +412,7 @@ namespace LI.BookService.DAL.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("StatusId")
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateAt")
@@ -498,9 +498,10 @@ namespace LI.BookService.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("LI.BookService.Model.Entities.Status", "Status")
-                        .WithMany("OfferLists")
+                        .WithMany()
                         .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LI.BookService.Model.Entities.User", "User")
                         .WithMany("OfferLists")
@@ -578,20 +579,21 @@ namespace LI.BookService.DAL.Migrations
             modelBuilder.Entity("LI.BookService.Model.Entities.WishList", b =>
                 {
                     b.HasOne("LI.BookService.Model.Entities.Status", "Status")
-                        .WithMany("WishLists")
+                        .WithMany()
                         .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("LI.BookService.Model.Entities.UserAddress", "UserAddress")
                         .WithMany()
                         .HasForeignKey("UserAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("LI.BookService.Model.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Status");
@@ -599,13 +601,6 @@ namespace LI.BookService.DAL.Migrations
                     b.Navigation("User");
 
                     b.Navigation("UserAddress");
-                });
-
-            modelBuilder.Entity("LI.BookService.Model.Entities.Status", b =>
-                {
-                    b.Navigation("OfferLists");
-
-                    b.Navigation("WishLists");
                 });
 
             modelBuilder.Entity("LI.BookService.Model.Entities.User", b =>

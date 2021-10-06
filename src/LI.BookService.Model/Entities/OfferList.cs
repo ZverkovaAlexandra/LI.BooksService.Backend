@@ -12,7 +12,7 @@ namespace LI.BookService.Model.Entities
         public DateTime YearPublishing { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
-        public int? StatusId { get; set; }
+        public int StatusId { get; set; }
         public BookLiterary BookLiterary { get; set; }
         public User User { get; set; }
         public Status Status { get; set; }
