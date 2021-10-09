@@ -13,6 +13,7 @@ using System;
 using System.Reflection;
 using System.IO;
 using Microsoft.OpenApi.Models;
+using LI.BookService.Hubs;
 
 namespace LI.BookService
 {
@@ -39,20 +40,21 @@ namespace LI.BookService
             services.AddScoped<IBookLiteraryRepository, BookLiteraryRepository>();
             services.AddScoped<IUserValueCategoryRepository, UserValueCategoryRepository>();
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "BookService",
-                    Description = "BookService",
-                });
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo
+            //    {
+            //        Version = "v1",
+            //        Title = "BookService",
+            //        Description = "BookService",
+            //    });
 
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
+            //    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            //    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            //    c.IncludeXmlComments(xmlPath);
+            //});
 
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -62,12 +64,15 @@ namespace LI.BookService
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1");
-                c.RoutePrefix = string.Empty;
-            });
+            //app.UseSwagger();
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1");
+            //    c.RoutePrefix = string.Empty;
+            //});
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -77,6 +82,8 @@ namespace LI.BookService
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=BookRequest}/{action=Index}/{id?}");
+
+                endpoints.MapHub<BookServiceHub>("/Hubs");
             });
         }
     }
