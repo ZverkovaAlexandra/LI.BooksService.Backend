@@ -75,6 +75,8 @@ namespace LI.BookService.Bll.Service
             newOffer.YearPublishing = requestBook.YearPublishing;
             newOffer.CreateAt = DateTime.Now;
             newOffer.UpdateAt = DateTime.Now;
+            newOffer.UserId = 8;
+            newOffer.StatusId = 1;
 
             await _offerListRepository.CreateAsync(newOffer);
         }
