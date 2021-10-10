@@ -34,7 +34,7 @@ namespace LI.BookService.DAL.Repositories
         /// <returns></returns>
         public async Task<Category> GetCategoryAsync(int id)
         {
-            var category = await _context.Categories.SingleOrDefaultAsync(x => x.CategoryId == id);
+            var category = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryId == id);
             return category;
         }
     }

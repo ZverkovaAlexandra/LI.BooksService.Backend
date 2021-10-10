@@ -16,7 +16,7 @@ namespace LI.BookService.DAL.Repositories
 
         public async Task<Author> GetAuthorByName(string firstName,string lastName)
         {
-            var selectAuthor = await _context.Authors.SingleOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
+            var selectAuthor = await _context.Authors.FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName);
             return selectAuthor;
         }
     }
