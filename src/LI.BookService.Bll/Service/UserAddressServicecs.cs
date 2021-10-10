@@ -50,6 +50,7 @@ namespace LI.BookService.Bll.Service
         public void AdressSetValue(UserAddress userAddress, DtoUserAddress dtoUserAddress)
         {
             userAddress.AddrApart = dtoUserAddress.AddrApart;
+            userAddress.UserId = 8;
             userAddress.AddrCity = dtoUserAddress.AddrCity;
             userAddress.AddrHouse = dtoUserAddress.AddrHouse;
             userAddress.AddrIndex = dtoUserAddress.AddrIndex;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LI.BookService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserAddressController : ControllerBase
     {
@@ -84,7 +84,7 @@ namespace LI.BookService.Controllers
         /// <param name="addressId"></param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<ActionResult> DeleteBook(int addressId)
+        public async Task<ActionResult> DeleteAddress(int addressId)
         {
             try
             {
