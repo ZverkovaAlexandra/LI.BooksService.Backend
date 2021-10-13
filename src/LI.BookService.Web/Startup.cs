@@ -13,6 +13,7 @@ using System;
 using System.Reflection;
 using System.IO;
 using Microsoft.OpenApi.Models;
+using LI.BookService.Hubs;
 
 namespace LI.BookService
 {
@@ -53,6 +54,7 @@ namespace LI.BookService
                 c.IncludeXmlComments(xmlPath);
             });
 
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -69,6 +71,9 @@ namespace LI.BookService
                 c.RoutePrefix = string.Empty;
             });
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -77,6 +82,8 @@ namespace LI.BookService
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=BookRequest}/{action=Index}/{id?}");
+
+                endpoints.MapHub<BookServiceHub>("/Hubs");
             });
         }
     }
