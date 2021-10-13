@@ -10,13 +10,10 @@ using System.Threading.Tasks;
 public class UserController : ControllerBase
 {
         private IUserService _userService;
-        private IUserRepository _userRepository;
 
-
-        public UserController(IUserService userService, IUserRepository userRepository)
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _userRepository = userRepository;
         }
 
         /// <summary>

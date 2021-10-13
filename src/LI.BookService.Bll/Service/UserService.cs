@@ -77,17 +77,13 @@ namespace LI.BookService.Bll.Service
         }
         public void MapEntityEdite(User user, EditedUserDTO userDTO)
         {
-            user = new User()
-            {
-                UserId = userDTO.UserId,
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                SecondName = userDTO.SecondName,
-                Email = userDTO.Email,
-                UserName = userDTO.UserName,
-                Password = userDTO.Password,
 
-            };
+            user.FirstName = userDTO.FirstName;
+            user.LastName = userDTO.LastName;
+            user.SecondName = userDTO.SecondName;
+            user.Email = userDTO.Email;
+            user.UserName = userDTO.UserName;
+            user.Password = userDTO.Password;
         }
 
         /// <summary>
