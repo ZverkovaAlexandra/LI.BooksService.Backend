@@ -1,5 +1,6 @@
 ﻿using LI.BookService.Core.Interfaces;
 using LI.BookService.Model.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace LI.BookService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class BookRequestController : ControllerBase
