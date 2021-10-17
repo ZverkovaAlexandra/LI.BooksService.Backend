@@ -1,6 +1,7 @@
 ﻿using LI.BookService.Model.DTO;
 using LI.BookService.Model.Entities;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 
 namespace LI.BookService.Core.Interfaces
@@ -27,7 +28,8 @@ namespace LI.BookService.Core.Interfaces
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<GetUserDTO> GetUserAsync(int userId);
-
+        Task<GetUserDTO> Authenticate(LoginUserDTO model);
+        Task<GetUserDTO> Register(CreateUserDTO userModel);
     }
 }
 

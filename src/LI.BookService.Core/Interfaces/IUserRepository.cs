@@ -11,7 +11,8 @@ namespace LI.BookService.Core.Interfaces
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<User> GetUser(int userId);
+        Task<User> GetUser(int id);
+        Task<User> Authenticate(string UserName,string Password);
     }
 }
 
