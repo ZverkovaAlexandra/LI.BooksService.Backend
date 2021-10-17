@@ -38,6 +38,9 @@ namespace LI.BookService
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IBookLiteraryRepository, BookLiteraryRepository>();
             services.AddScoped<IUserValueCategoryRepository, UserValueCategoryRepository>();
+            services.AddScoped<IWishListRepository, WishListRepository>();
+            services.AddScoped<IExchangeListRepository, ExchangeListRepository>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
