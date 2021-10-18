@@ -19,6 +19,7 @@ namespace LI.BookService.Model.Entities
         public byte[] Avatar { get; set; }
         public bool IsStaff { get; set; }
         public bool IsSuperAdmin { get; set; }
+        public string Token { get; set; }
 
         public List<OfferList> OfferLists { get; set; }
         public List<UserAddress> UserAddresses { get; set; }
@@ -28,7 +29,7 @@ namespace LI.BookService.Model.Entities
 
         public User(string FirstName, string LastName, string SecondName,
           string Email, string UserName, string Password,
-          int Rating, DateTime CreatedAt, bool Enabled, byte[] Avatar, bool IsStaff, bool IsSuperAdmin,
+          int Rating, DateTime CreatedAt, bool Enabled, byte[] Avatar, bool IsStaff, bool IsSuperAdmin, string token,
           List<UserAddress> UserAddresses)
         {
             this.FirstName = FirstName;
@@ -43,6 +44,7 @@ namespace LI.BookService.Model.Entities
             this.Avatar = Avatar;
             this.IsStaff = IsStaff;
             this.IsSuperAdmin = IsSuperAdmin;
+            this.Token = token;
             this.UserAddresses = UserAddresses;
         }
     }
