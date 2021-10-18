@@ -1,5 +1,6 @@
 ﻿using LI.BookService.Core.Interfaces;
 using LI.BookService.Model.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace LI.BookService.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class BookRequestController : ControllerBase
@@ -39,7 +41,7 @@ namespace LI.BookService.Controllers
         /// <summary>
         /// создание заявки на получение книги
         /// </summary>
-        /// <param name="dtoDemandBook"></param>
+        /// <param name="dtoNewRequest"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> CreateRequestBook([FromBody] DtoNewRequest dtoNewRequest)
@@ -59,7 +61,7 @@ namespace LI.BookService.Controllers
         /// <summary>
         ///  редактирование заявки для получения книги
         /// </summary>
-        /// <param name="requestEdit"></param>
+        /// <param name="requestBook"></param>
         /// <returns></returns>
         [HttpPut]
         public async Task<ActionResult<DtoRequestBook>> UpdateGenreBook([FromBody] DtoRequestBook requestBook)

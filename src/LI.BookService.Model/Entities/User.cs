@@ -19,10 +19,33 @@ namespace LI.BookService.Model.Entities
         public byte[] Avatar { get; set; }
         public bool IsStaff { get; set; }
         public bool IsSuperAdmin { get; set; }
+        public string Token { get; set; }
 
         public List<OfferList> OfferLists { get; set; }
         public List<UserAddress> UserAddresses { get; set; }
 
+        public User() { }
 
+
+        public User(string FirstName, string LastName, string SecondName,
+          string Email, string UserName, string Password,
+          int Rating, DateTime CreatedAt, bool Enabled, byte[] Avatar, bool IsStaff, bool IsSuperAdmin, string token,
+          List<UserAddress> UserAddresses)
+        {
+            this.FirstName = FirstName;
+            this.LastName = LastName;
+            this.SecondName = SecondName;
+            this.Email = Email;
+            this.UserName = UserName;
+            this.Password = Password;
+            this.Rating = Rating;
+            this.CreatedAt = CreatedAt;
+            this.Enabled = Enabled;
+            this.Avatar = Avatar;
+            this.IsStaff = IsStaff;
+            this.IsSuperAdmin = IsSuperAdmin;
+            this.Token = token;
+            this.UserAddresses = UserAddresses;
+        }
     }
 }

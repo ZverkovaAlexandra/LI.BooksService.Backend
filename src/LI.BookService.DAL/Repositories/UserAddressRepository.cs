@@ -21,7 +21,7 @@ namespace LI.BookService.DAL.Repositories
         /// <returns></returns>
         public async Task<UserAddress> GetAddressUser(int userId)
         {
-            var adress = await _context.UserAddresses.SingleOrDefaultAsync(x => x.UserId == userId);
+            var adress = await _context.UserAddresses.FirstOrDefaultAsync(x => x.UserId == userId);
             return adress;
         }
     }
