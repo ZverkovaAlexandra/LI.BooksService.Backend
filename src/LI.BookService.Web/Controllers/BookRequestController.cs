@@ -36,10 +36,10 @@ namespace LI.BookService.Controllers
             return Ok(listRequestUser);
         }
 
-        /// <summary>
+        ///// <summary>
         /// создание заявки на получение книги
         /// </summary>
-        /// <param name="dtoNewRequest"></param>
+        ////* <param/* name="dtoDemandBook*/"></param>*/
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> CreateRequestBook([FromBody] DtoNewRequest dtoNewRequest)
@@ -56,12 +56,12 @@ namespace LI.BookService.Controllers
 
         }
 
-        /// <summary>
-        ///  редактирование заявки для получения книги
-        /// </summary>
-        /// <param name="requestBook"></param>
-        /// <returns></returns>
-        [HttpPut]
+        // <summary>
+        //редактирование заявки для получения книги
+        // </summary>
+        // <param name = "requestEdit" ></ param >
+        // < returns ></ returns >
+        //[HttpPut]
         public async Task<ActionResult<DtoRequestBook>> UpdateGenreBook([FromBody] DtoRequestBook requestBook)
         {
             try
