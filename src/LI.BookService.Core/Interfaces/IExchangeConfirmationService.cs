@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using LI.BookService.Model.DTO;
+using LI.BookService.Model.Entities;
 using System.Threading.Tasks;
-using LI.BookService.Model.DTO;
 
 namespace LI.BookService.Core.Interfaces
 {
     public interface IExchangeConfirmationService
     {
         /// <summary>
-        /// преобразование сущности в DTO 
+        /// подвтерждение варианта для обмена
         /// </summary>
-        /// <param name="exchangeListId"></param>
+        /// <param name="exchangeConfirmationDTO"></param>
         /// <returns></returns>
-        Task<ExchangeConfirmation1DTO> GetExchangeList1IdAsync(int exchangeListId, int offerList1Id, int wishList1Id);
-        Task<ExchangeConfirmation2DTO> GetExchangeList2IdAsync(int exchangeListId, int offerList1Id, int wishList1Id);
-
-        // выбор варианта для обмена
-        Task<ExchangeConfirmation1DTO> ChooseExchangeAsync(int offerList2Id, int wishList2Id);
-
-        // подтверждение варианта для обмена
-        Task<ExchangeConfirmation1DTO> ConfirmExchangeAsync(bool isBoth);
+        Task<ExchangeConfirmationDTO> ConfirmExchangeAsync(ExchangeConfirmationDTO exchangeConfirmationDTO);
     }
 }
