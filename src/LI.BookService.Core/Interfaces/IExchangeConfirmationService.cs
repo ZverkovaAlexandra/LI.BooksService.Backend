@@ -1,5 +1,4 @@
 ﻿using LI.BookService.Model.DTO;
-using LI.BookService.Model.Entities;
 using System.Threading.Tasks;
 
 namespace LI.BookService.Core.Interfaces
