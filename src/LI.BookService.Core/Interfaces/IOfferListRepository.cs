@@ -22,5 +22,13 @@ namespace LI.BookService.Core.Interfaces
         /// <param name="id"></param>
         /// <returns></returns>
         Task<Category> GetCategoryAsync(int id);
+
+
+        /// <summary>
+        /// из списка офферлистов получаем названия книг
+        /// </summary>
+        /// <param name="offerLists"></param>
+        /// <returns></returns>
+        Task<List<BookLiterary>> GetBookLiterariesAsync(List<OfferList> offerLists);
     }
 }
