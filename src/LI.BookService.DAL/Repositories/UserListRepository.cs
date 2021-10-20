@@ -1,4 +1,5 @@
 ﻿using LI.BookService.Core.Interfaces;
+using LI.BookService.Model.DTO;
 using LI.BookService.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -25,16 +26,20 @@ namespace LI.BookService.DAL.Repositories
             var userList = await _context.UserLists.Include(x => x.UserValueCategories).ToListAsync();
             return userList;
         }
-        public async Task<List<OfferList>> GetOfferListAsync(List<UserList> userList)
+        public async Task<List<OfferList>> GetOfferListAsync(List<DtoVariantes> listVariantes)
         {
             List<OfferList> listOfferList = new List<OfferList>();
 
-            foreach (var s in userList)
+            foreach (var variant in listVariantes)
             {
-                var offer = await _context.OfferLists.FirstOrDefaultAsync(x => x.OfferListId == s.ListId);
-                if (offer != null)
-                    listOfferList.Add(offer);
+                foreach (var s in variant.VariantesList)
+                {
+                    var offer = await _context.OfferLists.FirstOrDefaultAsync(x => x.OfferListId == s.ListId);
+                    if (offer != null)
+                        listOfferList.Add(offer);
+                }
             }
+
             return listOfferList;
         }
     }

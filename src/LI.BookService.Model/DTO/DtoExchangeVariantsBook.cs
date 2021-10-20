@@ -8,9 +8,9 @@
         public string NameBook { get; set; }
 
         /// <summary>
-        /// процент совпадения
+        /// дто с вариантами и процентом совпадения
         /// </summary>
-        public double PercentCoincidence { get; set; }
+        public DtoVariantes DtoVariantes { get; set; }
 
         /// <summary>
         /// Id ExchangeList
