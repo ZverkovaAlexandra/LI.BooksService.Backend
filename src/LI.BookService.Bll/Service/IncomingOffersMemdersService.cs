@@ -10,47 +10,35 @@ namespace LI.BookService.Bll.Service
 {
     public class IncomingOffersMemdersService : IIncomingOffersMemders
     {
-        private IIncomingOffersMemders _incomingOffersMemders;
-        public IncomingOffersMemdersService(IIncomingOffersMemders incomingOffersMemders)
+     
+        private IExchangeConfirmationRepository _exchangeConfirmationRepository;
+        public IncomingOffersMemdersService( IExchangeConfirmationRepository exchangeConfirmationRepository)
         {
-            _incomingOffersMemders = incomingOffersMemders;
+            
+            _exchangeConfirmationRepository = exchangeConfirmationRepository;
         }
 
-        public async Task СompareExchangeListIdAsync(ExchangeListDTO exchangeListDTO)
+       
+
+        public async Task<ExchangeListDTO> ConfirmExchangeAsync(ExchangeListDTO exchangeListDTO)
         {
-            ExchangeList userList = new ExchangeList();
+            var exchangeConfirmation1 = await _exchangeConfirmationRepository.GetExchangeListId(exchangeListDTO.ExchangeListId);
 
-            var user = await _userRepository.GetByIdAsync(editedUserDTO.UserId);
-            //User user = new User();
-            //MapEntityCreate(user, createUserDTO);
-            //await _userRepository.CreateAsync(user);
 
-            //return createUserDTO;
+
+
+            if (exchangeConfirmation1.OfferList1Id == exchangeConfirmation1.OfferList2Id)
+            {
+                return exchangeListDTO;
+                    
+            }
+
+            
         }
 
-        //public async Task CreateUserValueCategory(DtoRequestBook requestBook)
-        //{
-        //    UserList userList = new UserList() { TypeList = UserListType.OfferList };
-
-        //    foreach (var s in requestBook.Categories)
-        //    {
-        //        var category = await _offerListRepository.GetCategoryAsync(s);
-        //        if (category != null)
-        //        {
-        //            UserValueCategory userValueCategory = new UserValueCategory() { CategoryId = s, UserList = userList };
-        //            await _userValueCategoryRepository.CreateAsync(userValueCategory);
-        //        }
-        //    }
-        //}
-//____________________________________________________________________________________________________________________________________
-//____________________________________________________________________________________________________________________________________
-        //public async Task<CreateUserDTO> CreateUserAsync(CreateUserDTO createUserDTO)
-        //{
-        //    User user = new User();
-        //    MapEntityCreate(user, createUserDTO);
-        //    await _userRepository.CreateAsync(user);
-
-        //    return createUserDTO;
-        //}
+        
     }
+
+   
 }
+         

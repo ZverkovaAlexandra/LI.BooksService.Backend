@@ -11,13 +11,27 @@ namespace LI.BookService.Controllers
     public class IncomingOffersMemdersController : ControllerBase
     {
         private IIncomingOffersMemders _incomingOffersMemders;
-        
-        private IOfferListRepository _requestBookRepository;
 
-        public IncomingOffersMemdersController(IIncomingOffersMemders incomingOffersMemders, IOfferListRepository requestBookRepository)
+
+
+        public IncomingOffersMemdersController(IIncomingOffersMemders incomingOffersMemders)
         {
             _incomingOffersMemders = incomingOffersMemders;
-            _requestBookRepository = requestBookRepository;
+
+        }
+
+
+
+        /// <summary>
+        /// подтверждение варианта для обмена
+        /// </summary>
+        /// <param name="exchangeListDTO"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ActionResult> ConfirmExchange([FromBody] ExchangeListDTO exchangeListDTO)
+        {
+            var exchangeConfirmation = await _incomingOffersMemders.ConfirmExchangeAsync(exchangeListDTO);
+            return Ok(exchangeConfirmation);
         }
     }
 }
