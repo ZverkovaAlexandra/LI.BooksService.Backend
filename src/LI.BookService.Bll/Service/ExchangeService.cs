@@ -12,81 +12,120 @@ namespace LI.BookService.Bll.Service
         private IExchangeListRepository _exchangeListRepository;
         private IOfferListRepository _offerListRepository;
         private IWishListRepository _wishListRepository;
-        private IUserListRepository _userlistRepository;
-        private IUserValueCategoryRepository _userValueCategory;
-        public ExchangeService(IExchangeListRepository exchangeListRepository, IOfferListRepository offerListRepository, IWishListRepository wishListRepository, IUserListRepository userlistRepository, IUserValueCategoryRepository userValueCategory)
+        private IUserListRepository _userListRepository;
+        private IUserValueCategoryRepository _userValueCategoryRepository;
+        public ExchangeService(IExchangeListRepository exchangeListRepository, IOfferListRepository offerListRepository, IWishListRepository wishListRepository, IUserListRepository userListRepository, IUserValueCategoryRepository userValueCategoryRepository)
         {
             _exchangeListRepository = exchangeListRepository;
             _offerListRepository = offerListRepository;
             _wishListRepository = wishListRepository;
-            _userlistRepository = userlistRepository;
-            _userValueCategory = userValueCategory;
+            _userListRepository = userListRepository;
+            _userValueCategoryRepository = userValueCategoryRepository;
         }
 
+        /// <summary>
+        /// Подбор вариантов для обмена системой
+        /// </summary>
+        /// <param name="exchangeListId"></param>
+        /// <returns></returns>
         public async Task<List<DtoExchangeVariantsBook>> GetVariantesAsync(int exchangeListId)
         {
             var exchangeList = await _exchangeListRepository.GetByIdAsync(exchangeListId);
 
-            var offerlist = await _offerListRepository.GetByIdAsync(exchangeList.OfferList1Id); 
+            var offerlist = await _offerListRepository.GetByIdAsync(exchangeList.OfferList1Id);
             var wishList = await _wishListRepository.GetByIdAsync(exchangeList.WishList1Id);
 
-            var userListOfferType = await _userlistRepository.GetUserListAsync(offerlist.OfferListId, UserListType.OfferList);
-            var userListWishType = await _userlistRepository.GetUserListAsync(wishList.WishListId, UserListType.WishList);
+            var userListOfferType = await _userListRepository.GetUserListAsync(offerlist.OfferListId, UserListType.OfferList);
+            var userListWishType = await _userListRepository.GetUserListAsync(wishList.WishListId, UserListType.WishList);
 
-            var userValueCategoryOffer = await _userValueCategory.GetCategoriesByUserListIdAsync(userListOfferType.UserListId);// нашел категории из офферлистов
-            var userValueCategoryWish = await _userValueCategory.GetCategoriesByUserListIdAsync(userListWishType.UserListId);// нашел категории из вишлистов
-
-            var allCategory = userValueCategoryOffer.Union(userValueCategoryWish).ToList();///общий список категорий
-
-            var userValueCategories = await _userValueCategory.GetUserValueCategoryAsync(allCategory);//по списку категорий находим список сущностей UserValueCategory
-
-            var userListCategory = await _userlistRepository.GetExchangeUserListAsync();//находим все UserList в бд
+            var userValueCategoryOffer = await _userValueCategoryRepository.GetCategoriesByUserListIdAsync(userListOfferType.UserListId);// нашел категории из офферлистов
+            var userValueCategoryWish = await _userValueCategoryRepository.GetCategoriesByUserListIdAsync(userListWishType.UserListId);// нашел категории из вишлистов
 
 
-            //////////////// нужно уточнить у Александры
-            List<UserList> variantesListFull = new List<UserList>(); ///лист с полным совпадением по категориям
-            List<UserList> variantesListPart = new List<UserList>(); ///лист с частичным совпадением по категориям
+            var userValueCategoriesOffer = await _userValueCategoryRepository.GetUserValueCategoryAsync(userValueCategoryOffer);//по списку категорий находим список сущностей UserValueCategory для offerList
+            var userValueCategoriesWish = await _userValueCategoryRepository.GetUserValueCategoryAsync(userValueCategoryWish);//по списку категорий находим список сущностей UserValueCategory для wishList
 
-            foreach (var s in userListCategory)
-            {
-                if (userValueCategories.All(x => s.UserValueCategories.Contains(x)))
-                {
-                    variantesListFull.Add(s);
-                }
-                else
-                {
-                    while (userValueCategories.Count != 0)
-                    {
-                        userValueCategories.RemoveAt(userValueCategories.Count - 1);
+            var userListCategory = await _userListRepository.GetExchangeUserListAsync();//находим все UserList в бд
 
-                        if (userValueCategories.All(x => s.UserValueCategories.Contains(x)))
-                        {
-                            variantesListPart.Add(s);
-                        }
-                    }
-                }
-            }
-            //////////////////////////////////
-            
+            var listVariantes = Helper(userListCategory, userValueCategoriesOffer, userValueCategoriesWish);//получаем варианты с процетом совпадения
 
-            var selectOfferLists = await _userlistRepository.GetOfferListAsync(variantesListFull);//находим все offer-листы,содержащие книги с  выбранными категориями
+            var selectOfferLists = await _userListRepository.GetOfferListAsync(listVariantes);//находим все offer-листы,содержащие книги с  выбранными категориями
 
             var selectBookLiteraries = await _offerListRepository.GetBookLiterariesAsync(selectOfferLists); //находим названия всех книг,которые содержатся в найденных офферлистах
 
             var selectExchangeLists = await _exchangeListRepository.GetExchangeListsAsync(selectOfferLists);///находим все exchange-листы по найденным offer-листам
-            List<DtoExchangeVariantsBook> listVariantes = new List<DtoExchangeVariantsBook>();
 
-            for (int i=0;i<selectBookLiteraries.Count();i++)
+            List<DtoExchangeVariantsBook> listDtoExckangeVariantes = new List<DtoExchangeVariantsBook>();
+
+            for (int i = 0; i < selectBookLiteraries.Count(); i++)
             {
                 DtoExchangeVariantsBook dto = new DtoExchangeVariantsBook();
                 dto.NameBook = selectBookLiteraries.ElementAt(i).BookName;
+                dto.DtoVariantes = listVariantes.ElementAt(i);
                 dto.ExchangeListId = selectExchangeLists.ElementAt(i).ExchangeListId;
-                listVariantes.Add(dto);
+
             }
 
+            return listDtoExckangeVariantes;
+        }
+        /// <summary>
+        /// заполняем лист дто с вариантами и процентом совпадения значениями
+        /// </summary>
+        /// <param name="userListCategory"></param>
+        /// <param name="userValueCategoriesOffer"></param>
+        /// <param name="userValueCategoriesWish"></param>
+        /// <returns></returns>
+        public List<DtoVariantes> Helper(List<UserList> userListCategory, List<UserValueCategory> userValueCategoriesOffer, List<UserValueCategory> userValueCategoriesWish)
+        {
+            List<DtoVariantes> listVariantes = new List<DtoVariantes>();
 
-            
+            foreach (var s in userListCategory)
+            {
+                if (userValueCategoriesOffer.All(x => s.UserValueCategories.Contains(x)))
+                {
+                    DtoVariantes variant = new DtoVariantes();
+                    variant.PercentCoincidence = 100;
+                    variant.VariantesList.Add(s);
+                    listVariantes.Add(variant);
+                }
+                else
+                {
+                    var result = s.UserValueCategories.Intersect(userValueCategoriesOffer);
+                    if (result.Count() != 0)
+                    {
+                        DtoVariantes variant = new DtoVariantes();
+                        variant.VariantesList.Add(s);
+                        double percent = (double)result.Count() / s.UserValueCategories.Count();
+                        percent *= 100;
+                        variant.PercentCoincidence = percent;
+                        listVariantes.Add(variant);
+                    }
+                }
+            }
 
+            foreach (var s in userListCategory)
+            {
+                if (userValueCategoriesWish.All(x => s.UserValueCategories.Contains(x)))
+                {
+                    DtoVariantes variant = new DtoVariantes();
+                    variant.PercentCoincidence = 100;
+                    variant.VariantesList.Add(s);
+                    listVariantes.Add(variant);
+                }
+                else
+                {
+                    var result = s.UserValueCategories.Intersect(userValueCategoriesWish);
+                    if (result.Count() != 0)
+                    {
+                        DtoVariantes variant = new DtoVariantes();
+                        variant.VariantesList.Add(s);
+                        double percent = (double)result.Count() / s.UserValueCategories.Count();
+                        percent *= 100;
+                        variant.PercentCoincidence = percent;
+                        listVariantes.Add(variant);
+                    }
+                }
+            }
 
             return listVariantes;
         }
