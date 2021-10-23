@@ -1,21 +1,40 @@
 ﻿using LI.BookService.Core.Interfaces;
 using LI.BookService.Model.DTO;
 using LI.BookService.Model.Entities;
+using LI.BookService.Bll.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace LI.BookService.Bll.Service
 {
     public class UserService : IUserService
     {
         private IUserRepository _userRepository;
+        private IConfiguration _configuration;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
+            _configuration = configuration;
         }
+
+        public async Task<GetUserDTO> Authenticate(LoginUserDTO model)
+        {
+            var user = await _userRepository.Authenticate(model.UserName, model.Password);
+            user.Token = _configuration.GenerateJwtToken(user);
+            return new GetUserDTO(user);
+        }
+
+        public async Task<GetUserDTO> Register(CreateUserDTO userModel)
+        {
+            await CreateUserAsync(userModel);
+            return await this.Authenticate( new LoginUserDTO(userModel.UserName, userModel.Password) );
+        }
+
         /// <summary>
         /// создание пользователя
         /// </summary>
@@ -44,7 +63,6 @@ namespace LI.BookService.Bll.Service
 
             return editedUserDTO;
         }
-
 
         /// <summary>
         /// хелпер для установки значения полей сущности адреса пользователя
@@ -91,27 +109,12 @@ namespace LI.BookService.Bll.Service
         /// </summary>
         /// <param name="userAddress"></param>
         /// <returns></returns>
-
-        public async Task<GetUserDTO> GetUserAsync(int userId)
+    
+        public async Task<GetUserDTO> GetUserAsync( int id)
         {
-            var user = await _userRepository.GetUser(userId);
-            var userDTO = new GetUserDTO()
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                SecondName = user.SecondName,
-                Email = user.Email,
-                UserName = user.UserName,
-                Password = user.Password,
-                Rating = user.Rating,
-                CreatedAt = user.CreatedAt,
-                Enabled = user.Enabled,
-                Avatar = user.Avatar,
-                IsStaff = user.IsStaff,
-                IsSuperAdmin = user.IsSuperAdmin,
-                UserAddresses = user.UserAddresses,
-            };
-
+            var user = await _userRepository.GetUser(id);
+            var userDTO = new GetUserDTO(user);
+            
             return userDTO;
         }
     }

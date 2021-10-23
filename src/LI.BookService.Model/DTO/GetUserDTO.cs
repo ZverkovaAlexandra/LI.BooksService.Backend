@@ -20,8 +20,29 @@ namespace LI.BookService.Model.DTO
         public byte[] Avatar { get; set; }
         public bool IsStaff { get; set; }
         public bool IsSuperAdmin { get; set; }
+        public string Token { get; set; }
+
 
         public List<OfferList> OfferLists { get; set; }
         public List<UserAddress> UserAddresses { get; set; }
+
+        public GetUserDTO(User user)
+        {
+            UserId = user.UserId;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            SecondName = user.SecondName;
+            Email = user.Email;
+            UserName = user.UserName;
+            Password = user.Password;
+            Rating = user.Rating;
+            CreatedAt = user.CreatedAt;
+            Enabled = user.Enabled;
+            Avatar = user.Avatar;
+            IsStaff = user.IsStaff;
+            IsSuperAdmin = user.IsSuperAdmin;
+            Token = user.Token;
+        }
     }
 }
+

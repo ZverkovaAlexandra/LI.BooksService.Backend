@@ -9,5 +9,7 @@ namespace LI.BookService.Model.DTO
         public DtoRequestBook DtoRequestBook { get; set; }
 
         public int AddressId { get; set; }
+        public int UserId { get; set; }
+        public int StatusId { get; set; }
     }
 }

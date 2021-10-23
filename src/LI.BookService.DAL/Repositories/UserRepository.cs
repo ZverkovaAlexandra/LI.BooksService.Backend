@@ -22,11 +22,17 @@ namespace LI.BookService.DAL.Repositories
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<User> GetUser(int userId)
+        public async Task<User> GetUser(int id)
         {
-            var user = await _context.User.SingleOrDefaultAsync(x => x.UserId == userId);
+            var user = await _context.User.SingleOrDefaultAsync(x =>  x.UserId==id);
             return user;
         }
 
+        public async Task<User> Authenticate(string UserName, string Password)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(x => x.UserName == UserName && x.Password == Password);
+            return user;
+        }
+       
     }
 }
