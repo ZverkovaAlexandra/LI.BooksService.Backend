@@ -8,8 +8,7 @@ namespace LI.BookService.Core.Interfaces
         /// <summary>
         /// подвтерждение варианта для обмена
         /// </summary>
-        /// <param name="exchangeConfirmationDTO"></param>
         /// <returns></returns>
-        Task<ExchangeConfirmationDTO> ConfirmExchangeAsync(ExchangeConfirmationDTO exchangeConfirmationDTO);
+        Task ConfirmExchangeAsync(ExchangeConfirmationDTO exchangeConfirmationDTO);
     }
 }

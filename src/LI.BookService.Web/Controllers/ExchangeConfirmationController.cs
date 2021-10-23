@@ -24,8 +24,8 @@ namespace LI.BookService.Controllers
         [HttpPost]
         public async Task<ActionResult> ConfirmExchange([FromBody] ExchangeConfirmationDTO exchangeConfirmationDTO)
         {
-            var exchangeConfirmation = await _exchangeConfirmationService.ConfirmExchangeAsync(exchangeConfirmationDTO);
-            return Ok(exchangeConfirmation);
+            await _exchangeConfirmationService.ConfirmExchangeAsync(exchangeConfirmationDTO);
+            return Ok();
         }
     }
 }
