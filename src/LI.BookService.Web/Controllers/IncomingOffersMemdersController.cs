@@ -28,10 +28,10 @@ namespace LI.BookService.Controllers
         /// <param name="exchangeListDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> ConfirmExchange([FromBody] ExchangeListDTO exchangeListDTO)
+        public async Task<ActionResult> IncomingOffers([FromBody] ExchangeListDTO exchangeListDTO)
         {
-            var exchangeConfirmation = await _incomingOffersMemders.ConfirmExchangeAsync(exchangeListDTO);
-            return Ok(exchangeConfirmation);
+            var IncomingOffers = await _incomingOffersMemders.ConfirmExchangeAsync(exchangeListDTO);
+            return Ok(IncomingOffers);
         }
     }
 }

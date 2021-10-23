@@ -16,8 +16,9 @@ namespace LI.BookService.DAL.Repositories
 
         public async Task<ExchangeList> GetExchangeListId(int exchangeListId)
         {
-            var exListId = await _context.ExchangeLists.SingleOrDefaultAsync(x => x.ExchangeListId == exchangeListId);
-            return exListId;
+            var exList = await _context.ExchangeLists.SingleOrDefaultAsync(x => x.ExchangeListId == exchangeListId);
+            var exLists = await _context.ExchangeLists.FirstOrDefaultAsync(x => exList.OfferList1Id == x.OfferList2Id);
+            return exLists;
         }
     }
 }
