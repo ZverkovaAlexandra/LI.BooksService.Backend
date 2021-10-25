@@ -41,7 +41,9 @@ namespace LI.BookService
             services.AddScoped<IUserValueCategoryRepository, UserValueCategoryRepository>();
             services.AddScoped<IWishListRepository, WishListRepository>();
             services.AddScoped<IExchangeListRepository, ExchangeListRepository>();
-
+            services.AddScoped<IUserListRepository, UserListRepository>();
+            services.AddScoped<IExchangeConfirmationRepository, ExchangeConfirmationRepository>();
+            services.AddScoped<IExchangeConfirmationService, ExchangeConfirmationService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
