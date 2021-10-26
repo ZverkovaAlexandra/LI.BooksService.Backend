@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace LI.BookService.Model.DTO
 {
     public class DtoNewRequest
     {
-        public DtoRequestBook DtoRequestBook { get; set; }
-
+        public OfferListDto OfferList { get; set; }
         public int AddressId { get; set; }
         public int UserId { get; set; }
-        public int StatusId { get; set; }
+        public List<int> WishListCategories { get; set; }
     }
 }

@@ -5,7 +5,7 @@
         /// <summary>
         /// название книги
         /// </summary>
-        public string NameBook { get; set; }
+        public string AutorName { get; set; }
 
         /// <summary>
         /// дто с вариантами и процентом совпадения
@@ -16,5 +16,10 @@
         /// Id ExchangeList
         /// </summary>
         public int ExchangeListId { get; set; }
+
+        /// <summary>
+        /// Id ExchangeList
+        /// </summary>
+        public int ForExchangeListId { get; set; }
     }
 }

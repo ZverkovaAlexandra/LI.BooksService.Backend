@@ -66,6 +66,24 @@ namespace LI.BookService.DAL
 
             // ----- UserList -----
 
+            modelBuilder.Entity<Status>().HasData(
+                new Status()
+                {
+                    Name = "Новый",
+                    StatusId = 1
+                },
+                new Status()
+                {
+                    Name = "В работе",
+                    StatusId = 2
+                },
+                new Status()
+                {
+                    Name = "Закрыто",
+                    StatusId = 3
+                }
+                );
+
             // ----- Category -----
 
             // ----- List -----
@@ -171,6 +189,28 @@ namespace LI.BookService.DAL
                 .OnDelete(DeleteBehavior.Restrict);
 
             // ----- ExchangeList -----
+            modelBuilder.Entity<ExchangeList>().Property(x => x.CreateAt).IsRequired();
+            modelBuilder.Entity<ExchangeList>()
+                .HasOne(x=> x.OfferList1)
+                .WithMany()
+                .HasForeignKey(x=> x.OfferList1Id)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ExchangeList>()
+                .HasOne(x => x.OfferList2)
+                .WithMany()
+                .HasForeignKey(x => x.OfferList2Id)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ExchangeList>()
+                .HasOne(x => x.WishList1)
+                .WithMany()
+                .HasForeignKey(x => x.WishList1Id)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ExchangeList>()
+                .HasOne(x => x.WishList2)
+                .WithMany()
+                .HasForeignKey(x => x.WishList2Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<ExchangeList>().Property(x => x.CreateAt).IsRequired();
             modelBuilder.Entity<ExchangeList>().Property(x => x.IsBoth)
                 .IsRequired()

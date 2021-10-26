@@ -14,6 +14,7 @@ using System.Reflection;
 using System.IO;
 using Microsoft.OpenApi.Models;
 using LI.BookService.Hubs;
+using LI.BookService.Bll.Helpers;
 
 namespace LI.BookService
 {
@@ -36,14 +37,17 @@ namespace LI.BookService
             services.AddScoped<IOfferListRepository, OfferListRepository>();
             services.AddScoped<IUserAddressRepository, UserAddressRepository>();
             services.AddScoped<IUserAddressService, UserAddressServicecs>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IBookLiteraryRepository, BookLiteraryRepository>();
-            services.AddScoped<IUserValueCategoryRepository, UserValueCategoryRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IWishListRepository, WishListRepository>();
             services.AddScoped<IExchangeListRepository, ExchangeListRepository>();
             services.AddScoped<IUserListRepository, UserListRepository>();
             services.AddScoped<IExchangeConfirmationRepository, ExchangeConfirmationRepository>();
             services.AddScoped<IExchangeConfirmationService, ExchangeConfirmationService>();
+            services.AddScoped<IExchangeService, ExchangeService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -78,7 +82,7 @@ namespace LI.BookService
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
+            app.UseMiddleware<JwtMiddleware>();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

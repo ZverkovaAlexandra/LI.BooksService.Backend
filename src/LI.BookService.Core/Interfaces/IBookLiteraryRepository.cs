@@ -7,6 +7,6 @@ namespace LI.BookService.Core.Interfaces
 {
     public interface IBookLiteraryRepository : IGenericRepository<BookLiterary>
     {
-        Task<BookLiterary> GetBookLiterary(DtoRequestBook requestBook, Author author);
+        Task<BookLiterary> GetBookLiterary(OfferListDto requestBook, Author author);
     }
 }

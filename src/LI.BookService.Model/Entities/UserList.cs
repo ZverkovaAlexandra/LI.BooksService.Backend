@@ -8,7 +8,7 @@ namespace LI.BookService.Model.Entities
         public int UserListId { get; set; }
         public UserListType TypeList { get; set; }
         public int ListId { get; set; }
-        public List<UserValueCategory> UserValueCategories { get; set; } = new List<UserValueCategory>();
+        public List<UserValueCategory> UserValueCategories { get; set; }
 
     }
 

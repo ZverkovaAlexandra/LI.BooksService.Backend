@@ -13,15 +13,10 @@ namespace LI.BookService.Core.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<List<OfferList>> GetAllRequestsUserAsync(int id);
+        Task<List<OfferList>> GetAllForUserAsync(int userId);
 
 
-        /// <summary>
-        /// получаем категорию по id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task<Category> GetCategoryAsync(int id);
+        Task<List<OfferList>> GetAllActiveForUserAsync(int userId);
 
 
         /// <summary>

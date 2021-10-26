@@ -21,22 +21,23 @@ namespace LI.BookService.DAL.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<List<OfferList>> GetAllRequestsUserAsync(int id)
+        public async Task<List<OfferList>> GetAllForUserAsync(int userId)
         {
-            var list = await _context.OfferLists.Where(x => x.UserId == id).ToListAsync();
+            var list = await _context.OfferLists.Where(x => x.UserId == userId).ToListAsync();
             return list;
         }
 
         /// <summary>
-        /// получаем категорию по id
+        /// получаем все заявки пользователя
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Category> GetCategoryAsync(int id)
+        public async Task<List<OfferList>> GetAllActiveForUserAsync(int userId)
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryId == id);
-            return category;
+            var list = await _context.OfferLists.Where(x => x.UserId == userId && x.StatusId == 1).ToListAsync();
+            return list;
         }
+
         /// <summary>
         /// из списка офферлистов получаем названия книг
         /// </summary>

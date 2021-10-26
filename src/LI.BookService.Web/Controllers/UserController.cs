@@ -1,6 +1,6 @@
+using LI.BookService.Bll.Helpers;
 using LI.BookService.Core.Interfaces;
 using LI.BookService.Model.DTO;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -22,7 +22,6 @@ public class UserController : ControllerBase
         /// </summary>
         /// <returns></returns>
         [HttpGet("{userId}")]
-        [Authorize]
         public async Task<ActionResult> GetUser(int userId)
         {
             var userDto = await _userService.GetUserAsync(userId);
@@ -36,7 +35,6 @@ public class UserController : ControllerBase
         /// <param name="createUserDTO"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> CreateUser([FromBody] CreateUserDTO createUserDTO)
         {
             if (createUserDTO != null)
@@ -77,9 +75,9 @@ public class UserController : ControllerBase
         }
     
     [HttpPost("login")]
-    public IActionResult Authenticate(LoginUserDTO model)
+    public async Task<IActionResult> Authenticate(LoginUserDTO model)
     {
-        var response = _userService.Authenticate(model);
+        var response = await _userService.Authenticate(model);
 
         if (response == null)
             return BadRequest(new { message = "Username or password is incorrect" });

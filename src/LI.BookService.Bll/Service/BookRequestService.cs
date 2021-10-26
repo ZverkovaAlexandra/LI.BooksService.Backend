@@ -1,7 +1,9 @@
 ﻿using LI.BookService.Core.Interfaces;
 using LI.BookService.Model.DTO;
 using LI.BookService.Model.Entities;
+using LI.BookService.Model.Enums;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LI.BookService.Bll.Service
@@ -11,17 +13,18 @@ namespace LI.BookService.Bll.Service
         private IOfferListRepository _offerListRepository;
         private IAuthorRepository _authorRepository;
         private IBookLiteraryRepository _bookLiteraryRepository;
-        private IUserValueCategoryRepository _userValueCategoryRepository;
+        private ICategoryRepository _categoryRepository;
         private IWishListRepository _wishListRepository;
         private IExchangeListRepository _exchangeListRepository;
 
-        public BookRequestService(IOfferListRepository offerListRepository, IAuthorRepository authorRepository, IBookLiteraryRepository bookLiteraryRepository, IUserValueCategoryRepository userValueCategoryRepository,
+        public BookRequestService(IOfferListRepository offerListRepository, IAuthorRepository authorRepository,
+            IBookLiteraryRepository bookLiteraryRepository, ICategoryRepository categoryRepository,
             IWishListRepository wishListRepository, IExchangeListRepository exchangeListRepository)
         {
             _offerListRepository = offerListRepository;
             _authorRepository = authorRepository;
             _bookLiteraryRepository = bookLiteraryRepository;
-            _userValueCategoryRepository = userValueCategoryRepository;
+            _categoryRepository = categoryRepository;
             _wishListRepository = wishListRepository;
             _exchangeListRepository = exchangeListRepository;
 
@@ -31,102 +34,33 @@ namespace LI.BookService.Bll.Service
         /// </summary>
         /// <param name="dtoNewRequest"></param>
         /// <returns></returns>
-        public async Task<DtoNewRequest> CreateRequestBook(DtoNewRequest dtoNewRequest)
+        public async Task<int> CreateRequestBook(DtoNewRequest dtoNewRequest)
         {
-            await CreateUserValueCategory(dtoNewRequest.DtoRequestBook);
-
             var offerList = await CreateOfferListAsync(dtoNewRequest);
+
+            await CreateCategories(dtoNewRequest.OfferList.Categories, offerList.OfferListId, UserListType.OfferList);
+
             var wishList = await CreateWishList(dtoNewRequest);
 
-            if (dtoNewRequest.AddressId == 0 || wishList == null)
+            await CreateCategories(dtoNewRequest.WishListCategories, wishList.WishListId, UserListType.WishList);
+
+            if (dtoNewRequest.AddressId == 0 || dtoNewRequest.WishListCategories.Count == 0)
             {
-
+                return 0;
             }
-            else
-                await CreateExchangeList(offerList, wishList);
 
+            var id = await CreateExchangeList(offerList, wishList);
 
-            return dtoNewRequest;
-        }
-        public async Task<Author> CrerateAuthorAsync(DtoRequestBook requestBook)
-        {
-            Author author = new Author() { FirstName = requestBook.AuthorFirstName, LastName = requestBook.AuthorLastName };
-            await _authorRepository.CreateAsync(author);
-            var selectAuthor = await _authorRepository.GetAuthorByName(author.FirstName, author.LastName);
-
-            return selectAuthor;
-        }
-        public async Task<BookLiterary> CreateBookLIteraryAsync(DtoRequestBook requestBook, Author author)
-        {
-            BookLiterary bookLitherary = new BookLiterary() { Author = author, BookName = requestBook.BookName };
-            await _bookLiteraryRepository.CreateAsync(bookLitherary);
-            var selectBookLiterary = await _bookLiteraryRepository.GetBookLiterary(requestBook, author);
-
-            return selectBookLiterary;
-        }
-        public async Task CreateUserValueCategory(DtoRequestBook requestBook)
-        {
-            UserList userList = new UserList() { TypeList = UserListType.OfferList };
-
-            foreach (var s in requestBook.Categories)
-            {
-                var category = await _offerListRepository.GetCategoryAsync(s);
-                if (category != null)
-                {
-                    UserValueCategory userValueCategory = new UserValueCategory() { CategoryId = s, UserList = userList };
-                    await _userValueCategoryRepository.CreateAsync(userValueCategory);
-                }
-            }
-        }
-
-
-        public async Task<OfferList> CreateOfferListAsync(DtoNewRequest dtoNewRequest)
-        {
-            var author = await CrerateAuthorAsync(dtoNewRequest.DtoRequestBook);
-            var bookLitherary = await CreateBookLIteraryAsync(dtoNewRequest.DtoRequestBook, author);
-
-            OfferList newOffer = new OfferList();
-            newOffer.BookLiterary = bookLitherary;
-            newOffer.YearPublishing = dtoNewRequest.DtoRequestBook.YearPublishing;
-            newOffer.CreateAt = DateTime.Now;
-            newOffer.UpdateAt = DateTime.Now;
-            newOffer.UserId = dtoNewRequest.UserId;
-            newOffer.StatusId = dtoNewRequest.StatusId; ;
-
-            await _offerListRepository.CreateAsync(newOffer);
-
-            return newOffer;
+            return id;
 
         }
-
-        public async Task<WishList> CreateWishList(DtoNewRequest dtoNewRequest)
-        {
-            WishList wishList = new WishList();
-            wishList.UserId = dtoNewRequest.UserId;
-            wishList.UserAddressId = dtoNewRequest.AddressId;
-            wishList.CreateAt = DateTime.Now;
-            wishList.UpdateAt = DateTime.Now;
-            wishList.StatusId = dtoNewRequest.StatusId;
-
-            await _wishListRepository.CreateAsync(wishList);
-
-            return wishList;
-        }
-        public async Task CreateExchangeList(OfferList offer, WishList wish)
-        {
-            ExchangeList exchangeList = new ExchangeList();
-            exchangeList.OfferList1Id = offer.OfferListId;
-            exchangeList.WishList1Id = wish.WishListId;
-            exchangeList.CreateAt = DateTime.Now;
-
-            await _exchangeListRepository.CreateAsync(exchangeList);
-        }
+        
         /// <summary>
         /// редактирование заявки на книгу
         /// </summary>
         /// <param name="requestBook"></param>
         /// <returns></returns>
-        public async Task<DtoRequestBook> EditRequestBookAsync(DtoRequestBook requestBook)
+        public async Task EditRequestBookAsync(OfferListDto requestBook)
         {
             var author = await _authorRepository.GetAuthorByName(requestBook.AuthorFirstName, requestBook.AuthorLastName);
             var bookLiterary = await _bookLiteraryRepository.GetBookLiterary(requestBook, author);
@@ -140,10 +74,80 @@ namespace LI.BookService.Bll.Service
 
             await _offerListRepository.UpdateAsync(offerList);
 
-            return requestBook;
+        }
+        public async Task<List<Model.DTO.UserExchangeList>> GetAllUserBookRequests(int userId)
+        {
+            return await _exchangeListRepository.GetAllUserExchangeLists(userId);
+        }
+        public Task RemoveBookRequest(int exchangeListId)
+        {
+            throw new NotImplementedException();
+        }
 
+        private async Task<Author> CrerateAuthorAsync(OfferListDto requestBook)
+        {
+            Author author = new Author() { FirstName = requestBook.AuthorFirstName, LastName = requestBook.AuthorLastName };
+            await _authorRepository.CreateAsync(author);
+            var selectAuthor = await _authorRepository.GetAuthorByName(author.FirstName, author.LastName);
+
+            return selectAuthor;
+        }
+        private async Task<BookLiterary> CreateBookLIteraryAsync(OfferListDto requestBook, Author author)
+        {
+            BookLiterary bookLitherary = new BookLiterary() { Author = author, BookName = requestBook.BookName };
+            await _bookLiteraryRepository.CreateAsync(bookLitherary);
+            var selectBookLiterary = await _bookLiteraryRepository.GetBookLiterary(requestBook, author);
+
+            return selectBookLiterary;
+        }
+        private async Task CreateCategories(List<int> categories, int listId, UserListType listType)
+        {
+            await _categoryRepository.CreateListCategoriesAsync(categories, listId, listType);
         }
 
 
+        private async Task<OfferList> CreateOfferListAsync(DtoNewRequest dtoNewRequest)
+        {
+            var author = await CrerateAuthorAsync(dtoNewRequest.OfferList);
+            var bookLitherary = await CreateBookLIteraryAsync(dtoNewRequest.OfferList, author);
+
+            OfferList newOffer = new OfferList();
+            newOffer.BookLiterary = bookLitherary;
+            newOffer.YearPublishing = dtoNewRequest.OfferList.YearPublishing;
+            newOffer.CreateAt = DateTime.Now;
+            newOffer.UpdateAt = DateTime.Now;
+            newOffer.UserId = dtoNewRequest.UserId;
+            newOffer.StatusId = (int)RequestStatus.New;
+
+            await _offerListRepository.CreateAsync(newOffer);
+
+            return newOffer;
+
+        }
+
+        private async Task<WishList> CreateWishList(DtoNewRequest dtoNewRequest)
+        {
+            WishList wishList = new WishList();
+            wishList.UserId = dtoNewRequest.UserId;
+            wishList.UserAddressId = dtoNewRequest.AddressId;
+            wishList.CreateAt = DateTime.Now;
+            wishList.UpdateAt = DateTime.Now;
+            wishList.StatusId = (int)RequestStatus.New;
+
+            await _wishListRepository.CreateAsync(wishList);
+
+            return wishList;
+        }
+        private async Task<int> CreateExchangeList(OfferList offer, WishList wish)
+        {
+            ExchangeList exchangeList = new ExchangeList();
+            exchangeList.OfferList1Id = offer.OfferListId;
+            exchangeList.WishList1Id = wish.WishListId;
+            exchangeList.CreateAt = DateTime.Now;
+
+            await _exchangeListRepository.CreateAsync(exchangeList);
+
+            return exchangeList.ExchangeListId;
+        }      
     }
 }

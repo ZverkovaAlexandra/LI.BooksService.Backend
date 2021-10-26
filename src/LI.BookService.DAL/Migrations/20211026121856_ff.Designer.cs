@@ -4,14 +4,16 @@ using LI.BookService.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LI.BookService.DAL.Migrations
 {
     [DbContext(typeof(BookServiceDbContext))]
-    partial class BookServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211026121856_ff")]
+    partial class ff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,13 +109,13 @@ namespace LI.BookService.DAL.Migrations
                     b.Property<int>("OfferList1Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OfferList2Id")
+                    b.Property<int>("OfferList2Id")
                         .HasColumnType("int");
 
                     b.Property<int>("WishList1Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WishList2Id")
+                    b.Property<int>("WishList2Id")
                         .HasColumnType("int");
 
                     b.HasKey("ExchangeListId");
@@ -480,7 +482,8 @@ namespace LI.BookService.DAL.Migrations
                     b.HasOne("LI.BookService.Model.Entities.OfferList", "OfferList2")
                         .WithMany()
                         .HasForeignKey("OfferList2Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("LI.BookService.Model.Entities.WishList", "WishList1")
                         .WithMany()
@@ -491,7 +494,8 @@ namespace LI.BookService.DAL.Migrations
                     b.HasOne("LI.BookService.Model.Entities.WishList", "WishList2")
                         .WithMany()
                         .HasForeignKey("WishList2Id")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("OfferList1");
 
