@@ -13,14 +13,28 @@ namespace LI.BookService.Bll.Service
         private IOfferListRepository _offerListRepository;
         private IWishListRepository _wishListRepository;
         private IUserListRepository _userListRepository;
-        private IUserValueCategoryRepository _userValueCategoryRepository;
-        public ExchangeService(IExchangeListRepository exchangeListRepository, IOfferListRepository offerListRepository, IWishListRepository wishListRepository, IUserListRepository userListRepository, IUserValueCategoryRepository userValueCategoryRepository)
+        private ICategoryRepository _userValueCategoryRepository;
+        public ExchangeService(IExchangeListRepository exchangeListRepository, IOfferListRepository offerListRepository, IWishListRepository wishListRepository, IUserListRepository userListRepository, ICategoryRepository userValueCategoryRepository)
         {
             _exchangeListRepository = exchangeListRepository;
             _offerListRepository = offerListRepository;
             _wishListRepository = wishListRepository;
             _userListRepository = userListRepository;
             _userValueCategoryRepository = userValueCategoryRepository;
+        }
+
+        public async Task<List<DtoExchangeVariantsBook>> GetAllUserIncomingExchangeRequests(int userId)
+        {
+            var res = await _exchangeListRepository.AllUserIncomingExchangeRequests(userId);
+
+            return res;
+        }
+
+        public async Task<List<DtoExchangeVariantsBook>> GetIncomingExchangeRequests(int exchangeListId)
+        {
+            var res = await _exchangeListRepository.IncomingExchangeRequests(exchangeListId);
+
+            return res;
         }
 
         /// <summary>
@@ -60,7 +74,7 @@ namespace LI.BookService.Bll.Service
             for (int i = 0; i < selectBookLiteraries.Count(); i++)
             {
                 DtoExchangeVariantsBook dto = new DtoExchangeVariantsBook();
-                dto.NameBook = selectBookLiteraries.ElementAt(i).BookName;
+                dto.AutorName = selectBookLiteraries.ElementAt(i).BookName;
                 dto.DtoVariantes = listVariantes.ElementAt(i);
                 dto.ExchangeListId = selectExchangeLists.ElementAt(i).ExchangeListId;
 

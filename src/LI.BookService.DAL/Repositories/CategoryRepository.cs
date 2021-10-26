@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace LI.BookService.DAL.Repositories
 {
-    public class UserValueCategoryRepository : GenericRepository<UserValueCategory>, IUserValueCategoryRepository
+    public class CategoryRepository : GenericRepository<UserValueCategory>, ICategoryRepository
     {
         private readonly BookServiceDbContext _context;
 
-        public UserValueCategoryRepository(BookServiceDbContext context) : base(context)
+        public CategoryRepository(BookServiceDbContext context) : base(context)
         {
             _context = context;
         }
@@ -46,6 +46,21 @@ namespace LI.BookService.DAL.Repositories
             }
 
             return listCategories;
+        }
+
+        public async Task CreateListCategoriesAsync(List<int> categories, int listId, UserListType listType)
+        {
+            var newUserList = new UserList()
+            {
+                ListId = listId,
+                TypeList = listType,
+                UserValueCategories = categories.Select(x => new UserValueCategory
+                {
+                    CategoryId = x,                   
+                }).ToList()
+            };
+
+            await _context.AddAsync(newUserList);           
         }
     }
 }

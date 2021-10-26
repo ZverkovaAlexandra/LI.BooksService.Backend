@@ -26,13 +26,18 @@ namespace LI.BookService.Bll.Service
         {
             var user = await _userRepository.Authenticate(model.UserName, model.Password);
             user.Token = _configuration.GenerateJwtToken(user);
-            return new GetUserDTO(user);
+            var res = new GetUserDTO().Map(user);
+
+            return res;
         }
 
         public async Task<GetUserDTO> Register(CreateUserDTO userModel)
         {
             await CreateUserAsync(userModel);
-            return await this.Authenticate( new LoginUserDTO(userModel.UserName, userModel.Password) );
+            return await this.Authenticate( new LoginUserDTO() {
+            Password = userModel.Password,
+            UserName = userModel.UserName
+            } );
         }
 
         /// <summary>
@@ -40,13 +45,33 @@ namespace LI.BookService.Bll.Service
         /// </summary>
         /// <param name="createUserDTO"></param>
         /// <returns></returns>
-        public async Task<CreateUserDTO> CreateUserAsync(CreateUserDTO createUserDTO)
+        public async Task<CreateUserDTO> CreateUserAsync(CreateUserDTO userDTO)
         {
-            User user = new User();
-            MapEntityCreate(user, createUserDTO);
+           var user = new User()
+            {
+                FirstName = userDTO.FirstName,
+                LastName = userDTO.LastName,
+                SecondName = userDTO.SecondName,
+                Email = userDTO.Email,
+                UserName = userDTO.UserName,
+                Password = userDTO.Password,
+                UserAddresses = new List<UserAddress>()
+            };
+            user.UserAddresses.Add(new UserAddress()
+            {
+                AddrIndex = userDTO.AddrIndex,
+                AddrSreet = userDTO.AddrSreet,
+                AddrHouse = userDTO.AddrHouse,
+                AddrStructure = userDTO.AddrStructure,
+                AddrApart = userDTO.AddrApart,
+                AddrCity = userDTO.AddrCity
+            });
+
             await _userRepository.CreateAsync(user);
 
-            return createUserDTO;
+            userDTO.Id = user.UserId;
+
+            return userDTO;
         }
 
         /// <summary>
@@ -64,35 +89,6 @@ namespace LI.BookService.Bll.Service
             return editedUserDTO;
         }
 
-        /// <summary>
-        /// хелпер для установки значения полей сущности адреса пользователя
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="userDTO"></param>
-        /// 
-        public void MapEntityCreate(User user, CreateUserDTO userDTO)
-        {
-            user = new User()
-            {
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                SecondName = userDTO.SecondName,
-                Email = userDTO.Email,
-                UserName = userDTO.UserName,
-                Password = userDTO.Password,
-                UserAddresses = new List<UserAddress>()
-            };
-            user.UserAddresses.Add(new UserAddress()
-            {
-                AddrIndex = userDTO.AddrIndex,
-                AddrSreet = userDTO.AddrSreet,
-                AddrHouse = userDTO.AddrHouse,
-                AddrStructure = userDTO.AddrStructure,
-                AddrApart = userDTO.AddrApart
-            });
-
-
-        }
         public void MapEntityEdite(User user, EditedUserDTO userDTO)
         {
 
@@ -113,9 +109,8 @@ namespace LI.BookService.Bll.Service
         public async Task<GetUserDTO> GetUserAsync( int id)
         {
             var user = await _userRepository.GetUser(id);
-            var userDTO = new GetUserDTO(user);
             
-            return userDTO;
+            return new GetUserDTO().Map(user);
         }
     }
 }

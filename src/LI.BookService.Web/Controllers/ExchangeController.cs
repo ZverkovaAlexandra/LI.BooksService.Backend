@@ -1,11 +1,9 @@
 ﻿using LI.BookService.Core.Interfaces;
+using LI.BookService.Model.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace LI.BookService.Controllers
 {
@@ -24,12 +22,37 @@ namespace LI.BookService.Controllers
         /// Подбор вариантов для обмена системой
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{exchangeListId}")]
+        [HttpGet("variants/{exchangeListId}")]
         public async Task<ActionResult> GetVariants(int exchangeListId)
         {
             var variantes = await _iExchangeService.GetVariantesAsync(exchangeListId);
             return Ok(variantes);
 
+        }
+
+        /// <summary>
+        /// Все входящие предложения для обмена
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("incoming/all/{userId}")]
+        public async Task<ActionResult> GetAllUserIncomingExchangeRequests(int userId)
+        {
+            var res = await _iExchangeService.GetAllUserIncomingExchangeRequests(userId);
+
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Входящие предложения для обмена для определенной заявки
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("incoming/{exchangeListId}")]
+        public async Task<ActionResult> GetIncomingExchangeRequests(int exchangeListId)
+        {
+
+            var res = await _iExchangeService.GetIncomingExchangeRequests(exchangeListId);
+
+            return Ok(res);
         }
     }
 }

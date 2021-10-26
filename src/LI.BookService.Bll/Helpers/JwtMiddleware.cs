@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using LI.BookService.Core.Interfaces;
+using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace LI.BookService.Bll.Helpers
 {
-    class JwtMiddleware
+    public class JwtMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly IConfiguration _configuration;
@@ -27,12 +29,12 @@ namespace LI.BookService.Bll.Helpers
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
             if (token != null)
-                AttachUserToContext(context, userService, token);
+                await AttachUserToContext(context, userService, token);
 
             await _next(context);
         }
 
-        public void AttachUserToContext(HttpContext context, IUserService userService, string token)
+        public async Task AttachUserToContext(HttpContext context, IUserService userService, string token)
         {
             try
             {
@@ -51,7 +53,9 @@ namespace LI.BookService.Bll.Helpers
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
-                context.Items["User"] = userService.GetUserAsync(userId);
+                var user = await userService.GetUserAsync(userId);
+
+                context.User = user;
             }
             catch
             {

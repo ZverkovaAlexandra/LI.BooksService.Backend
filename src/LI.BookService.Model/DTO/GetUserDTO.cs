@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using LI.BookService.Model.Entities;
 
 namespace LI.BookService.Model.DTO
 {
-  public class GetUserDTO 
+    public class GetUserDTO: ClaimsPrincipal
     {
         public int UserId { get; set; }
         public string FirstName { get; set; }
@@ -26,22 +27,25 @@ namespace LI.BookService.Model.DTO
         public List<OfferList> OfferLists { get; set; }
         public List<UserAddress> UserAddresses { get; set; }
 
-        public GetUserDTO(User user)
+        public GetUserDTO Map(User user)
         {
-            UserId = user.UserId;
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            SecondName = user.SecondName;
-            Email = user.Email;
-            UserName = user.UserName;
-            Password = user.Password;
-            Rating = user.Rating;
-            CreatedAt = user.CreatedAt;
-            Enabled = user.Enabled;
-            Avatar = user.Avatar;
-            IsStaff = user.IsStaff;
-            IsSuperAdmin = user.IsSuperAdmin;
-            Token = user.Token;
+            return new GetUserDTO
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                SecondName = user.SecondName,
+                Email = user.Email,
+                UserName = user.UserName,
+                Password = user.Password,
+                Rating = user.Rating,
+                CreatedAt = user.CreatedAt,
+                Enabled = user.Enabled,
+                Avatar = user.Avatar,
+                IsStaff = user.IsStaff,
+                IsSuperAdmin = user.IsSuperAdmin,
+                Token = user.Token
+            };
         }
     }
 }

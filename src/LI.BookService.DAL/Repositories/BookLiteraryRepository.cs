@@ -15,7 +15,7 @@ namespace LI.BookService.DAL.Repositories
             _context = context;
         }
 
-        public async Task<BookLiterary> GetBookLiterary(DtoRequestBook requestBook, Author author)
+        public async Task<BookLiterary> GetBookLiterary(OfferListDto requestBook, Author author)
         {
             var selectBookLiterary = await _context.BookLiteraries.FirstOrDefaultAsync(x => x.BookName == requestBook.BookName && x.AuthorId == author.AuthorId);
             return selectBookLiterary;
